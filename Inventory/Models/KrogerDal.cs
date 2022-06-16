@@ -30,8 +30,6 @@ namespace GC_Cars_Web_App.Models
         public string CallAPI(string endpoint)
         {
             Token token = GetToken();
-            Console.WriteLine(token.expires_in);
-            Console.WriteLine(token.access_token.Length);
 
             string url = "https://api.kroger.com/v1/" + endpoint;
 
@@ -49,9 +47,29 @@ namespace GC_Cars_Web_App.Models
             return response.Content;
         }
 
-        public Product SearchProducts(string term, string locationId)
+        public Product SearchProducts(string term, string locationId, string productId, string brand, string fulfillment, int limit)
         {
-            string result = CallAPI($"products?filter.term={term}&filter.locationId={locationId}");
+            string url = "products?";
+
+            if (term != "emptyString") 
+                url += $"&filter.term={term}";
+
+            if (locationId != "emptyString")
+                url += $"&filter.locationId={locationId}";
+
+            if (productId != "emptyString")
+                url += $"&filter.productId={productId}";
+
+            if (brand != "emptyString")
+                url += $"&filter.brand={brand}";
+
+            if (fulfillment != "emptyString")
+                url += $"&filter.fulfillment={fulfillment}";
+
+            if (limit != -1)
+                url += $"&filter.limit={limit}";
+
+            string result = CallAPI(url);
 
             Product searchedProducts = JsonConvert.DeserializeObject<Product>(result);
 

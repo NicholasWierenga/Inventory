@@ -9,19 +9,58 @@ import { Product } from './product';
 
 export class ProductService {
   urlRoot: string;
-  currentUser: string = ""; 
-  headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8'); // We don't need headers or requestOption, but it makes console less bad.
-  requestOptions: Object = {
-    headers: this.headers,
-    responseType: 'text'
-  };
 
   constructor (private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.urlRoot = baseUrl;
   }
 
-  searchProducts(term: string, locationId: string): Observable <Product> {
-    console.log("in service");
-    return this.http.get<Product>(this.urlRoot + `product/searchProducts/${term}&${locationId}`);
+  searchProducts(term: string, locationId: string, productId: string, brand: string, fulfillment: string, limit: number): Observable <Product> {
+    let endpoint: string = "product/SearchProducts/";
+
+    if (term != "") {
+      endpoint += `&${term}`;
+    }
+    else {
+      endpoint += "&emptyString";
+    }
+    
+    if (locationId != "") {
+      endpoint += `&${locationId}`;
+    }
+    else {
+      endpoint += "&emptyString";
+    }
+      
+    if (productId != "") {
+      endpoint += `&${productId}`;
+    }
+    else {
+      endpoint += "&emptyString";
+    }
+
+    if (brand != "") {
+      endpoint += `&${brand}`;
+    }
+    else {
+      endpoint += "&emptyString";
+    }
+
+    if (fulfillment != "") {
+      endpoint += `&${fulfillment}`;
+    }
+    else {
+      endpoint += "&emptyString";
+    }
+      
+    endpoint += "&";
+    if (limit != -1) {
+      endpoint += `&${limit}`;
+    }
+    else {
+      endpoint += "&emptyString";
+    }
+      
+
+    return this.http.get<Product>(this.urlRoot + endpoint);
   }
 }
