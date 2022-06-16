@@ -1,10 +1,17 @@
-<div *ngFor="let product of searchedList.data">
+<span *ngIf="searchedList.data !== null; else emptySearch">
+  <div *ngFor="let product of searchedList.data">
     <section>
-        {{product.productId}}
-        <br>
-        {{product.brand}}
-        <br>
-        {{product.categories}}
+      {{product.productId}}
+      <br>
+      {{product.brand}}
+      <br>
+      {{product.categories}}
     </section>
     <br>
-</div>
+  </div>
+</span>
+
+<ng-template #emptySearch>
+  Your search was empty.
+</ng-template>
+

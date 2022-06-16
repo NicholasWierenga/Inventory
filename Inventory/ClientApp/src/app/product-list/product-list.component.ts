@@ -10,20 +10,22 @@ import { ProductService } from '../product.service';
 export class ProductListComponent implements OnInit {
   searchedList!: Product;
 
-
   constructor( public productService: ProductService ) { }
 
-  searchProducts(term: string, locationId: string): void {
-    this.productService.searchProducts(term, locationId).subscribe((response) => {
-      console.log("in comp subscription");
+  searchProducts(term: string, locationId: string, productId: string, brand: string, fulfillment: string, limit: number): void {
+    this.productService.searchProducts(term, locationId, productId, brand, fulfillment, limit).subscribe((response) => {
       this.searchedList = response;
     });
   }
 
   ngOnInit(): void {
-    let term: string = "milk";
-    let locationId: string = "01400441";
-    this.searchProducts(term, locationId);
-  }
+    let term: string = "yogurt"; // Must have 3 or more characters in order to work.
+    let locationId: string = "";
+    let productId: string = "";
+    let brand: string = "";
+    let fulfillment: string = "";
+    let limit: number = 5;
 
+    this.searchProducts(term, locationId, productId, brand, fulfillment, limit);
+  }
 }
