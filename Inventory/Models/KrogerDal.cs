@@ -30,8 +30,6 @@ namespace GC_Cars_Web_App.Models
         public string CallAPI(string endpoint)
         {
             Token token = GetToken();
-            Console.WriteLine(token.expires_in);
-            Console.WriteLine(token.access_token.Length);
 
             string url = "https://api.kroger.com/v1/" + endpoint;
 
