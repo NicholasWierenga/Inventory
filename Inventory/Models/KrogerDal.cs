@@ -47,11 +47,11 @@ namespace GC_Cars_Web_App.Models
             return response.Content;
         }
 
-        public Product SearchProducts(string term, string locationId, string productId, string brand, string fulfillment, int limit)
+        public Product SearchProducts(string term, string locationId, string productId, string brand, int limit)
         {
             string url = "products?";
 
-            if (term != "emptyString") 
+            if (term != "emptyString")
                 url += $"&filter.term={term}";
 
             if (locationId != "emptyString")
@@ -62,9 +62,6 @@ namespace GC_Cars_Web_App.Models
 
             if (brand != "emptyString")
                 url += $"&filter.brand={brand}";
-
-            if (fulfillment != "emptyString")
-                url += $"&filter.fulfillment={fulfillment}";
 
             if (limit != -1)
                 url += $"&filter.limit={limit}";

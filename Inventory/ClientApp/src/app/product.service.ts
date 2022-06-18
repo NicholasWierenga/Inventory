@@ -14,14 +14,14 @@ export class ProductService {
     this.urlRoot = baseUrl;
   }
 
-  searchProducts(term: string, locationId: string, productId: string, brand: string, fulfillment: string, limit: number): Observable <Product> {
+  searchProducts(term: string, locationId: string, productId: string, brand: string, limit: number): Observable <Product> {
     let endpoint: string = "product/SearchProducts/";
 
     if (term != "") {
       endpoint += `&${term}`;
     }
     else {
-      endpoint += "&emptyString";
+      endpoint += "&emptyString"; // We can't pass null to the url, so we use some unlikely name for any product, like emptyString
     }
     
     if (locationId != "") {
@@ -45,14 +45,6 @@ export class ProductService {
       endpoint += "&emptyString";
     }
 
-    if (fulfillment != "") {
-      endpoint += `&${fulfillment}`;
-    }
-    else {
-      endpoint += "&emptyString";
-    }
-      
-    endpoint += "&";
     if (limit != -1) {
       endpoint += `&${limit}`;
     }
