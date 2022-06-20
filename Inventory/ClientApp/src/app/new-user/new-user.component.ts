@@ -8,38 +8,55 @@ import { UserService } from '../user.service';
   styleUrls: ['./new-user.component.css']
 })
 export class NewUserComponent implements OnInit {
-  firstName: string = "";
+  firstName: string = "" ;
   lastName: string = "";
   address: string = "";
   email: string = "";
   phone: number = undefined!;
-  allUsers!: User[];
+  badEmail: boolean = false;
+  badFirstName: boolean = false;
+  badPhoneNumber: boolean = false;
+  
   //TODO: Give something to indicate to the user if email was already taken or if they have too many or too few digits in the phone number.
   
   constructor( public userService: UserService ) { }
 
-  getAllUsers(): void {
-    this.userService.getAllUsers().subscribe((Users) => 
-    this.allUsers = Users
+  createNewUser(): void {
+    this.badEmail = false;
+    this.badFirstName = false;
+    this.badPhoneNumber = false;
+    let newUser: User = {orders: undefined!, id: undefined!, firstName: this.firstName, 
+    lastName: this.lastName, address: this.address, email: this.email, phone: this.phone};
+
+    if (newUser.firstName.length === 0) {
+      this.badFirstName = true;
+    }
+
+    if (this.userService.allUsers.find((user) => user.email === newUser.email) !== undefined) {
+      this.badEmail = true; // We use user email as a unique identifier for users.
+    }
+
+    if (newUser.phone.toString().length !== 10) {
+      this.badPhoneNumber = true;
+    }
+
+    if (this.badEmail || this.badFirstName || this.badPhoneNumber) {
+      return;
+    }
+
+    this.userService.createUser(newUser).subscribe(() => 
+      this.getNewestUser()
     );
   }
 
-  createNewUser(): void {
-    let newUser: User = {orders: undefined!, id: undefined!, firstName: this.firstName, 
-      lastName: this.lastName, address: this.address, email: this.email, phone: this.phone};
-
-    // This is to check if the email is currently being used by another user, 2 users can't have the same email.
-    console.log("in create");
-    if (this.allUsers.filter((user) => user.email === newUser.email).length === 0) {
-      this.userService.createUser(newUser).subscribe((response) => {
-        console.log("inside create sub");
-        this.allUsers.push(response);
-      });
-    }
+  getNewestUser(): void { // For when we create a new user. It adds it onto the end of the array instead of us needing to call getAllUsers again.
+    this.userService.newestUser().subscribe((user) => 
+      this.userService.allUsers.push(user)
+    );
   }
 
   ngOnInit(): void {
-    this.getAllUsers();
+    this.userService.getUsers();
   }
 }  
 
