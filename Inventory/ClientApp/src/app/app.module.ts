@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { NewUserComponent } from './new-user/new-user.component';
+import { UserOrdersComponent } from './user-orders/user-orders.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     ProductListComponent,
-    NewUserComponent
+    NewUserComponent,
+    UserOrdersComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -22,7 +24,8 @@ import { NewUserComponent } from './new-user/new-user.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: ProductListComponent, pathMatch: 'full' },
-      { path: 'new-user', component: NewUserComponent }
+      { path: 'new-user', component: NewUserComponent },
+      {path: 'user-orders', component: UserOrdersComponent}
     ])
   ],
   providers: [],
