@@ -79,4 +79,3 @@ export interface Price {
     regular: number;
     promot: number;
 }
-

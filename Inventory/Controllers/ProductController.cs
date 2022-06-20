@@ -1,4 +1,4 @@
-﻿using GC_Cars_Web_App.Models;
+﻿using Inventory.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
