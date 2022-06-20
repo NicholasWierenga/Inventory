@@ -21,15 +21,13 @@
 </div>
 
 <div>
-  <input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
+  <input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" (keyup)="searchProducts(term, locationId, productId, brand)">
   <br>
-  <input type="text" name="search" placeholder="Location ID" [(ngModel)]="locationId" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
+  <input type="text" name="search" placeholder="Location ID" [(ngModel)]="locationId" (keyup)="searchProducts(term, locationId, productId, brand)">
   <br>
-  <input type="text" name="search" placeholder="Product ID" [(ngModel)]="productId" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
+  <input type="text" name="search" placeholder="Product ID" [(ngModel)]="productId" (keyup)="searchProducts(term, locationId, productId, brand)">
   <br>
-  <input type="text" name="search" placeholder="Brand" [(ngModel)]="brand" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
-  <br> 
-  <input type="number" name="search" min="1" max="50" placeholder="Limit number of items to display" [(ngModel)]="limit" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
+  <input type="text" name="search" placeholder="Brand" [(ngModel)]="brand" (keyup)="searchProducts(term, locationId, productId, brand)">
   <br> <!--TODO: clicking the arrows on the input box doesn't update the limit, try disabling that also, values below 1 or above 50 can be typed in, so try fixing that-->
   Available for curbside pickup: <input type="checkbox" id="curbside" (click)="searchForFulfillment()">
   <br>
@@ -41,6 +39,8 @@
   <br>
   
   <span *ngIf="searchedList.data.length > 0; else emptySearch">
+    Number of results: {{searchedList.data.length}}
+    
     <section *ngFor="let product of searchedList.data">
       {{product.productId}}
       <br>
