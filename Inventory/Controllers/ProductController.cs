@@ -8,6 +8,7 @@ namespace Inventory.Controllers
     public class ProductController : ControllerBase
     {
         KrogerDal api = new KrogerDal();
+        readonly InventoryContext inventoryContext = new InventoryContext();
 
         [HttpGet("SearchProducts/&{term}&{locationId}&{productId}&{brand}&{limit}")]
         public Product SearchProducts(string term, string locationId, string productId , string brand, int limit)
@@ -16,6 +17,40 @@ namespace Inventory.Controllers
           // we need to get the database products table going then we can call in the db table and merge it with the Product list we get here.
 
             return api.SearchProducts(term, locationId, productId, brand, limit); // This is just to see if we can talk to the API.
+        }
+        [HttpGet("showAllProducts")]
+        public List<ProductInv> showAllProducts()
+        {
+            return inventoryContext.Products.ToList();
+        }
+
+        [HttpPost("createProduct")]
+        public void createProduct(ProductInv newProduct)
+        {
+            inventoryContext.Products.Add(newProduct);
+            inventoryContext.SaveChanges();
+        }
+
+        [HttpDelete("deleteProduct/{id}")]
+        public void deleteProduct(int id) // This isn't used anywhere and can be deleted if we want.
+        {
+            inventoryContext.Remove(inventoryContext.Products.Find(id));
+            inventoryContext.SaveChanges();
+        }
+        
+        [HttpPost("updateProduct/{id}")]
+        public string updateProduct(int id, ProductInv updatedProduct)
+        {
+            ProductInv p = inventoryContext.Products.Find(id);
+            p.ProductName = updatedProduct.ProductName;
+            p.OnHand = updatedProduct.OnHand;
+            p.LowQuant = updatedProduct.LowQuant;
+            p.Description = updatedProduct.Description;
+            p.Sales = updatedProduct.Sales;
+
+            inventoryContext.Update(p);
+            inventoryContext.SaveChanges();
+            return $"{p.ProductName} has been updated.";
         }
     }
 }
