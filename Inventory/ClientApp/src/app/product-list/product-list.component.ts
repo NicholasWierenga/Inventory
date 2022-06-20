@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
+import { User } from '../user';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-product-list',
@@ -16,12 +18,15 @@ export class ProductListComponent implements OnInit {
   productId: string = "";
   brand: string = "";
   limit: number = 5;
+  allUsers!: User[];
 
-  // fulfillment can give bad results that doesn't match search requirements.
-  // If 10 searches match fulfillment, but there's a limit of 15, those 10 will be shown with 5 more non-matching
-  // TODO: Don't use fulfillment to search, use a js filter to find ONLY those that match.
+  constructor( private productService: ProductService, private userService: UserService ) { }
 
-  constructor( public productService: ProductService ) { }
+  getAllUsers(): void {
+    this.userService.getAllUsers().subscribe((Users) => 
+    this.allUsers = Users
+    );
+  }
 
   // We may want to add a form to the HTML so we aren't constantly calling the api everytime we update any of the parameters.
   searchProducts(term: string, locationId: string, productId: string, brand: string, limit: number): void {

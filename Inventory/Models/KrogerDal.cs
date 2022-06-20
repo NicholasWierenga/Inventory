@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using RestSharp;
 
-namespace GC_Cars_Web_App.Models
+namespace Inventory.Models
 {
     public class KrogerDal
     {

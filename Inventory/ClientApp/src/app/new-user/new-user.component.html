@@ -1,0 +1,14 @@
+<form (ngSubmit)="createNewUser()">
+    <input type="text" placeholder="First name" [(ngModel)]="firstName" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" placeholder="Last name" [(ngModel)]="lastName" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" placeholder="Address" [(ngModel)]="address" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" placeholder="Email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="number" placeholder="Phone number" [(ngModel)]="phone" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="submit" value="Submit">
+</form>
+<br>
