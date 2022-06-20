@@ -1,24 +1,46 @@
-<input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
-<br>
-<input type="text" name="search" placeholder="Location ID" [(ngModel)]="locationId" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
-<br>
-<input type="text" name="search" placeholder="Product ID" [(ngModel)]="productId" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
-<br>
-<input type="text" name="search" placeholder="Brand" [(ngModel)]="brand" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
-<br> 
-<input type="number" name="search" min="1" max="50" placeholder="Limit number of items to display" [(ngModel)]="limit" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
-<br> <!--TODO: clicking the arrows on the input box doesn't update the limit, try disabling that
-               also, values below 1 or above 50 can be typed in, so try fixing that-->
-Available for curbside pickup: <input type="checkbox" id="curbside" (click)="searchForFulfillment()">
-<br>
-Available for delivery: <input type="checkbox" id="delivery" (click)="searchForFulfillment()">
-<br>
-Available for in store pickup: <input type="checkbox" id="inStore" (click)="searchForFulfillment()">
-<br>
-Available for ship to home: <input type="checkbox" id="shipToHome" (click)="searchForFulfillment()">
-<br>
+<div>
+  <p *ngIf="this.userService.badLogin" style="color: red;">
+    Your login information is incorrect. Please try again.
+    <br>
+  </p>
 
-<span *ngIf="searchedList.data.length > 0; else emptySearch">
+  <p *ngIf="this.userService.loggedInUser === undefined; else loggedIn">
+    <input type="text" [(ngModel)]="this.userService.email" maxlength="30" placeholder="Email">
+    <button (click)="this.userService.login(this.userService.email)">Login</button>
+    <br>
+    <button (click)="this.userService.testLogin()">Login for testing</button>
+  </p>
+  
+  <ng-template #loggedIn>
+    <p>
+      Logged in as: {{this.userService.loggedInUser.firstName}}
+      <button (click)="this.userService.logout()">Logout</button>
+    </p>
+  </ng-template> 
+  <br>
+</div>
+
+<div>
+  <input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
+  <br>
+  <input type="text" name="search" placeholder="Location ID" [(ngModel)]="locationId" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
+  <br>
+  <input type="text" name="search" placeholder="Product ID" [(ngModel)]="productId" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
+  <br>
+  <input type="text" name="search" placeholder="Brand" [(ngModel)]="brand" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
+  <br> 
+  <input type="number" name="search" min="1" max="50" placeholder="Limit number of items to display" [(ngModel)]="limit" (keyup)="searchProducts(term, locationId, productId, brand, limit)">
+  <br> <!--TODO: clicking the arrows on the input box doesn't update the limit, try disabling that also, values below 1 or above 50 can be typed in, so try fixing that-->
+  Available for curbside pickup: <input type="checkbox" id="curbside" (click)="searchForFulfillment()">
+  <br>
+  Available for delivery: <input type="checkbox" id="delivery" (click)="searchForFulfillment()">
+  <br>
+  Available for in store pickup: <input type="checkbox" id="inStore" (click)="searchForFulfillment()">
+  <br>
+  Available for ship to home: <input type="checkbox" id="shipToHome" (click)="searchForFulfillment()">
+  <br>
+  
+  <span *ngIf="searchedList.data.length > 0; else emptySearch">
     <section *ngFor="let product of searchedList.data">
       {{product.productId}}
       <br>
@@ -38,8 +60,9 @@ Available for ship to home: <input type="checkbox" id="shipToHome" (click)="sear
       </span>
     </section>
     <br>
-</span>
-
-<ng-template #emptySearch>
-    Your search is empty.
-</ng-template>
+  </span>
+  
+  <ng-template #emptySearch>
+      Your search is empty.
+  </ng-template>
+</div>
