@@ -22,15 +22,9 @@ export class ProductListComponent implements OnInit {
 
   constructor( private productService: ProductService, public userService: UserService ) { }
 
-  getAllUsers(): void {
-    this.userService.getAllUsers().subscribe((Users) => 
-    this.allUsers = Users
-    );
-  }
-
   // We may want to add a form to the HTML so we aren't constantly calling the api everytime we update any of the parameters.
-  searchProducts(term: string, locationId: string, productId: string, brand: string, limit: number): void {
-    this.productService.searchProducts(term, locationId, productId, brand, limit).subscribe((response) => {
+  searchProducts(term: string, locationId: string, productId: string, brand: string): void {
+    this.productService.searchProducts(term, locationId, productId, brand).subscribe((response) => {
       this.fullList = response;
       this.searchedList = response;
       this.searchForFulfillment();
@@ -84,7 +78,7 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.searchProducts(this.term, this.locationId, this.productId, this.brand, this.limit);
+    this.searchProducts(this.term, this.locationId, this.productId, this.brand);
     this.userService.getUsers();
   }
 }

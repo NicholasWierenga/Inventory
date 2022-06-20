@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
+using TypeMerger;
 
 namespace Inventory.Models
 {
@@ -47,8 +49,9 @@ namespace Inventory.Models
             return response.Content;
         }
 
-        public Product SearchProducts(string term, string locationId, string productId, string brand, int limit)
+        public Product SearchProducts(string term, string locationId, string productId, string brand)
         {
+            int startAt = 0;
             string url = "products?";
 
             if (term != "emptyString")
@@ -63,54 +66,23 @@ namespace Inventory.Models
             if (brand != "emptyString")
                 url += $"&filter.brand={brand}";
 
-            if (limit != -1)
-                url += $"&filter.limit={limit}";
+            url += $"&filter.limit=50";
+            var jObjectResult = new JObject();
+            string result = CallAPI(url); // filter.start skips the first startAt products in the search. The min is 1 and max it can skip is 1000.
+            
 
-            string result = CallAPI(url);
+            while (startAt < 1000) // TODO: Insert a break if the CALLAPI start returning nothing.
+            {
+                startAt += 50; // We can get a response containing 50 products at most, so that's why we have to keep looping until we hit 1000.
+                JObject jObject = JObject.Parse(result);
+                jObjectResult.Merge(jObject);
 
-            Product searchedProducts = JsonConvert.DeserializeObject<Product>(result);
+                result = CallAPI(url + $"&filter.start={startAt}");
+            }
+
+            Product searchedProducts = JsonConvert.DeserializeObject<Product>(jObjectResult.ToString());
 
             return searchedProducts;
         }
-
-        public string CallAPI2(string endpoint) // I'm keeping this to look at.
-        {
-            string url = "https://localhost:7103/GC_Dealership/" + endpoint;
-            Console.WriteLine(url);
-            HttpWebRequest request = WebRequest.CreateHttp(url);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-
-            StreamReader rd = new StreamReader(response.GetResponseStream());
-
-            string JSON = rd.ReadToEnd();
-
-            return JSON;
-        }
-
-        // The API Docs said that refreshing tokens was a thing and that there was supposed to be a refresh_token in our response JSON above, but there isn't one.
-        // I think they removed that feature, because tokens last a lot shorter than they did than what the doc examples suggest.
-        // The code below is to refresh a token. We're keeping it for if I misunderstood something and there actually is a refresh_token somewhere.
-        // We get a new token every time we make an API call instead, which could be fixed by keeping track of when the token was generated and making
-        // a new token once it passes the 30 minute mark.
-
-        //public void RefreshToken() // The token only lasts for so long, so we'll need to refresh it over the programs lifetime.
-        //{ kroger API lies, refreshing isn't a thing
-        //    var client = new RestClient("https://api.kroger.com/v1/connect/oauth2/token");
-
-        //    var request = new RestRequest("resource", Method.Post);
-        //    request.Timeout = -1;
-        //    request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-        //    //request.AddHeader("Authorization", "Basic base64(inventory4-cb1553e29211093b11e9438d9967dbda392671584998637784:Kxc-8oZKoKfE7dq5EGwteVG2B7aVOs132-Y85oUU)");
-        //    request.AddHeader("Cache-Control", "no-cache"); // maybe get rid of
-        //    request.AddParameter("grant_type", $"refresh_token&refresh_token={token}");
-        //    request.AddParameter("client_id", "inventory4-cb1553e29211093b11e9438d9967dbda392671584998637784");
-        //    request.AddParameter("client_secret", "Kxc-8oZKoKfE7dq5EGwteVG2B7aVOs132-Y85oUU"); // remember to move this to a secret file later.
-
-        //    RestResponse response = client.Execute(request);
-        //    Console.WriteLine(response.Content);
-
-        //    token = JObject.Parse(response.Content)["access_token"].ToString();
-        //}
     }
 }

@@ -14,8 +14,9 @@ export class ProductService {
     this.urlRoot = baseUrl;
   }
 
-  searchProducts(term: string, locationId: string, productId: string, brand: string, limit: number): Observable <Product> {
+  searchProducts(term: string, locationId: string, productId: string, brand: string): Observable <Product> {
     let endpoint: string = "product/SearchProducts/";
+    let amountSearched: number = 0;
 
     if (term != "") {
       endpoint += `&${term}`;
@@ -44,15 +45,11 @@ export class ProductService {
     else {
       endpoint += "&emptyString";
     }
-
-    if (limit != -1) {
-      endpoint += `&${limit}`;
-    }
-    else {
-      endpoint += "&emptyString";
-    }
-      
-
+    
     return this.http.get<Product>(this.urlRoot + endpoint);
+  }
+
+  createFullProduct(): void {
+
   }
 }
