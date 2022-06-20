@@ -9,6 +9,14 @@ namespace Inventory.Controllers
     {
         readonly InventoryContext inventoryContext = new InventoryContext();
 
+        // We call this for when we add a new user to add it to the end of allUsers array.
+        // This avoids constantly calling the DB for all users just to get the one new one.
+        [HttpGet("newestUser")]
+        public User newestUser() 
+        {
+            return inventoryContext.Users.ToList().Last();
+        }
+
         [HttpGet("showAllUsers")]
         public List<User> showAllUsers()
         {

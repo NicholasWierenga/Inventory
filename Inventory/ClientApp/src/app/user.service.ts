@@ -28,10 +28,17 @@ export class UserService {
     return this.http.post<User>(this.urlRoot + "user/createUser", newUser, this.requestOptions);
   }
 
+  newestUser(): Observable<User> {
+    return this.http.get<User>(this.urlRoot + "user/newestUser");
+  }
+
   getUsers(): void {
-    this.getAllUsers().subscribe((Users) => 
-    this.allUsers = Users
-    );
+    if (this.allUsers === undefined) { // This is to avoid calling all users everytime the user decides to switch the page, which is taxing.
+    //                                    This should never cause an issue as when we add/update an user, we always add/update in allUsers accordingly.
+      this.getAllUsers().subscribe((Users) => 
+      this.allUsers = Users
+      );
+    }
   }
 
   login(email: string) { // 2 dfferent users cannot have the same email, so we use that as the unique identifier.
