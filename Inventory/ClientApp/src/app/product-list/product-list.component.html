@@ -41,7 +41,7 @@
   <span *ngIf="searchedList.data.length > 0; else emptySearch">
     Number of results: {{searchedList.data.length}}
     
-    <section *ngFor="let product of searchedList.data">
+    <section *ngFor="let product of searchedList.data" style="border: 1px solid;">
       {{product.productId}}
       <br>
       {{product.brand}}

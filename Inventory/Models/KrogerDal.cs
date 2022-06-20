@@ -16,7 +16,6 @@ namespace Inventory.Models
             request.Method = Method.Post;
             request.Timeout = -1;
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            //request.AddHeader("Authorization", "Basic base64(inventory4-cb1553e29211093b11e9438d9967dbda392671584998637784:Kxc-8oZKoKfE7dq5EGwteVG2B7aVOs132-Y85oUU)");
             request.AddHeader("Cache-Control", "no-cache");
             request.AddParameter("grant_type", "client_credentials");
             request.AddParameter("client_id", "inventory4-cb1553e29211093b11e9438d9967dbda392671584998637784");
@@ -70,12 +69,11 @@ namespace Inventory.Models
             var jObjectResult = new JObject();
             string result = CallAPI(url); // filter.start skips the first startAt products in the search. The min is 1 and max it can skip is 1000.
             
-
             while (startAt < 1000) // TODO: Insert a break if the CALLAPI start returning nothing.
             {
                 startAt += 50; // We can get a response containing 50 products at most, so that's why we have to keep looping until we hit 1000.
                 JObject jObject = JObject.Parse(result);
-                jObjectResult.Merge(jObject);
+                jObjectResult.Merge(jObject); // Merges our json strings together.
 
                 result = CallAPI(url + $"&filter.start={startAt}");
             }
