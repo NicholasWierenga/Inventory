@@ -20,7 +20,7 @@ export class ProductListComponent implements OnInit {
   limit: number = 5;
   allUsers!: User[];
 
-  constructor( private productService: ProductService, private userService: UserService ) { }
+  constructor( private productService: ProductService, public userService: UserService ) { }
 
   getAllUsers(): void {
     this.userService.getAllUsers().subscribe((Users) => 
@@ -38,8 +38,8 @@ export class ProductListComponent implements OnInit {
   }
 
   // Below is a function to filter our api call for a list of products. The api itself has a parameter that filters for
-  // these, but that feature gives you all the ones matching your parameters and then products that do not match your search
-  // until the list of products reaches the limit set by the user. This method shows only whatever fulfillments the user wants.
+  // these, but that feature gives all the ones matching your parameters and then products that do not match your search
+  // until the list of products reaches the limit set by the user. This method shows only items that match whatever the user wants.
   searchForFulfillment(): void {
     let curbsideCheckBox: any = document.getElementById("curbside");
     let deliveryCheckBox: any = document.getElementById("delivery");
@@ -85,5 +85,6 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchProducts(this.term, this.locationId, this.productId, this.brand, this.limit);
+    this.userService.getUsers();
   }
 }
