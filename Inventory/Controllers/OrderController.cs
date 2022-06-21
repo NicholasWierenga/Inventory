@@ -16,7 +16,7 @@ namespace Inventory.Controllers
         }
 
         [HttpPost("createOrder")]
-        public void createProduct(Order newOrder)
+        public void createOrder(Order newOrder)
         {
             inventoryContext.Orders.Add(newOrder);
             inventoryContext.SaveChanges();
@@ -41,6 +41,12 @@ namespace Inventory.Controllers
             inventoryContext.Update(o);
             inventoryContext.SaveChanges();
             return $"Order at id of {o.OrderId} has been updated.";
+        }
+        [HttpGet("getOrdersByUserId/{id}")]
+        public List<Order> getOrdersByUserId(int id)
+        {
+            List<Order> orders = inventoryContext.Orders.Where(o => o.UserId == id).ToList();
+            return orders;
         }
     }
 }
