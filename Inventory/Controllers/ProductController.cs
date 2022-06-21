@@ -44,7 +44,7 @@ namespace Inventory.Controllers
             inventoryContext.Remove(inventoryContext.Products.Find(id));
             inventoryContext.SaveChanges();
         }
-        
+
         [HttpPost("updateProduct/{id}")]
         public string updateProduct(int id, ProductInv updatedProduct)
         {

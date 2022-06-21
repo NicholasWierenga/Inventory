@@ -24,6 +24,7 @@ export class ProductListComponent implements OnInit {
     this.productService.searchProducts(term, locationId, productId, brand).subscribe((response) => {
       this.productService.fullList = response;
       this.productService.searchedList = response;
+
       this.productService.mergeProductProductInv();
       this.searchForFulfillment();
     });

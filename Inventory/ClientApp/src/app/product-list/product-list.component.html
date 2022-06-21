@@ -51,6 +51,7 @@
     Number of results: {{productService.searchedList.data.length}}
     
     <section *ngFor="let product of productService.searchedList.data" style="border: 1px solid;">
+      
       {{product.productId}}
       <br>
       {{product.brand}}
@@ -71,6 +72,10 @@
         Sales in past week: {{item.inventory.sales}}
         <br>
         Amount in stock: {{item.inventory.onHand}}
+        <br>
+        <p *ngIf="item.inventory.onHand < item.inventory.sales" style="color: red;">
+          This item is nearly out of stock.
+        </p>
       </span>
     </section>
     <br>

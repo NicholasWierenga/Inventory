@@ -53,12 +53,12 @@ export class ProductService {
     else {
       endpoint += "&emptyString";
     }
-
+    
     return this.http.get<Product>(this.urlRoot + endpoint);
   }
   
   getProductInv(): void {
-    this.http.get<ProductInv[]>(this.urlRoot + "product/showAllProducts/").subscribe((response) => {
+    this.http.get<ProductInv[]>(this.urlRoot + "product/showAllProducts").subscribe((response) => {
       this.productInvArray = response
     });
   }
@@ -70,7 +70,8 @@ export class ProductService {
           item.inventory = this.productInvArray.find((element) => item.itemId === element.itemId)!;
         }
         else {
-          let newProductInv: ProductInv = {id: undefined!, productName: data.description, itemId: item.itemId, onHand: 5, sales: 5};
+          let newProductInv: ProductInv = {id: undefined!, productName: data.description, itemId: item.itemId, 
+            onHand: Math.floor(Math.random() * 250), sales: Math.floor(Math.random() * 35)};
 
           this.newProductInvArray.push(newProductInv);
           item.inventory = newProductInv;
@@ -82,14 +83,12 @@ export class ProductService {
 
     if (this.newProductInvArray.length > 0) {
       for(let i = 0; i < this.newProductInvArray.length; i++) {
-        this.createProductInv(this.newProductInvArray[i]).subscribe();
+        this.createProductInv(this.newProductInvArray[i]).subscribe(() => this.getProductInv());
       }
-      
-      this.getProductInv();
     }
   }
 
   createProductInv(newProductInvs: ProductInv): Observable<ProductInv> {
-    return this.http.post<ProductInv>(this.urlRoot + "product/createProductInvs/", newProductInvs, this.requestOptions);
+    return this.http.post<ProductInv>(this.urlRoot + "product/createProductInvs", newProductInvs, this.requestOptions);
   }
 }

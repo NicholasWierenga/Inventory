@@ -49,7 +49,7 @@ namespace Inventory.Models
 
                 entity.Property(e => e.ItemId).HasMaxLength(30);
 
-                entity.Property(e => e.ProductName).HasMaxLength(40);
+                entity.Property(e => e.ProductName).HasMaxLength(255);
             });
 
             modelBuilder.Entity<User>(entity =>
