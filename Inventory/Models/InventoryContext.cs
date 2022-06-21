@@ -25,12 +25,12 @@ namespace Inventory.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=tcp:gcinventoryfinal.database.windows.net,1433;Initial " +
-                    "Catalog=Inventory;Persist Security Info=False;User ID=GCFinal;Password=Password1!;" +
-                    "MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer("Server=tcp:gcinventoryfinal.database.windows.net,1433;Initial Catalog=Inventory;Persist Security Info=False;" +
+                    "User ID=GCFinal;Password=Password1!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
-
+        // use Scaffold-DbContext "Server=tcp:gcinventoryfinal.database.windows.net,1433;Initial Catalog=Inventory;Persist Security Info=False;User ID=GCFinal;Password=Password1!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
+        // to rebuild dbcontext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Order>(entity =>
@@ -40,14 +40,14 @@ namespace Inventory.Models
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Orders__UserId__38996AB5");
+                    .HasConstraintName("FK__Orders__UserId__60A75C0F");
             });
 
             modelBuilder.Entity<ProductInv>(entity =>
             {
                 entity.ToTable("Product");
 
-                entity.Property(e => e.Description).HasMaxLength(80);
+                entity.Property(e => e.ItemId).HasMaxLength(30);
 
                 entity.Property(e => e.ProductName).HasMaxLength(40);
             });

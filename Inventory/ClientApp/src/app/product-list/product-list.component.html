@@ -21,14 +21,23 @@
 </div>
 
 <div>
-  <input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" (keyup)="searchProducts(term, locationId, productId, brand)">
-  <br>
-  <input type="text" name="search" placeholder="Location ID" [(ngModel)]="locationId" (keyup)="searchProducts(term, locationId, productId, brand)">
-  <br>
-  <input type="text" name="search" placeholder="Product ID" [(ngModel)]="productId" (keyup)="searchProducts(term, locationId, productId, brand)">
-  <br>
-  <input type="text" name="search" placeholder="Brand" [(ngModel)]="brand" (keyup)="searchProducts(term, locationId, productId, brand)">
-  <br> <!--TODO: clicking the arrows on the input box doesn't update the limit, try disabling that also, values below 1 or above 50 can be typed in, so try fixing that-->
+  <form (ngSubmit)="searchProducts(term, locationId, productId, brand)">
+    <input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" name="search" placeholder="Location ID" [(ngModel)]="locationId" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" name="search" placeholder="Product ID" [(ngModel)]="productId" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" name="search" placeholder="Brand" [(ngModel)]="brand" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="submit" value="Search">
+    <br>
+  </form>
+  
+  <p *ngIf="locationId.length !== 8 && locationId.length !== 0" style="color: red;">
+    To search using the checkboxes you must enter a valid 8 digit location ID.
+    <br>
+  </p>
   Available for curbside pickup: <input type="checkbox" id="curbside" (click)="searchForFulfillment()">
   <br>
   Available for delivery: <input type="checkbox" id="delivery" (click)="searchForFulfillment()">
@@ -38,10 +47,10 @@
   Available for ship to home: <input type="checkbox" id="shipToHome" (click)="searchForFulfillment()">
   <br>
   
-  <span *ngIf="searchedList.data.length > 0; else emptySearch">
-    Number of results: {{searchedList.data.length}}
+  <span *ngIf="productService.searchedList.data.length > 0; else emptySearch">
+    Number of results: {{productService.searchedList.data.length}}
     
-    <section *ngFor="let product of searchedList.data" style="border: 1px solid;">
+    <section *ngFor="let product of productService.searchedList.data" style="border: 1px solid;">
       {{product.productId}}
       <br>
       {{product.brand}}
@@ -49,6 +58,8 @@
       {{product.categories}}
       <br>
       <span *ngFor="let item of product.items">
+        Name of product: {{item.inventory.productName}}
+        <br>
         Curbside pickup: {{item.fulfillment.curbside}}
         <br>
         Delivery: {{item.fulfillment.delivery}}
@@ -57,6 +68,9 @@
         <br>
         Ship to home: {{item.fulfillment.shipToHome}}
         <br>
+        Sales in past week: {{item.inventory.sales}}
+        <br>
+        Amount in stock: {{item.inventory.onHand}}
       </span>
     </section>
     <br>

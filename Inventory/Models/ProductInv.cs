@@ -8,8 +8,7 @@ namespace Inventory.Models
         public int Id { get; set; }
         public string? ProductName { get; set; }
         public int? OnHand { get; set; }
-        public bool? LowQuant { get; set; }
-        public string? Description { get; set; }
         public int? Sales { get; set; }
+        public string? ItemId { get; set; }
     }
 }

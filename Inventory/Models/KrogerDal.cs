@@ -69,9 +69,9 @@ namespace Inventory.Models
             var jObjectResult = new JObject();
             string result = CallAPI(url); // filter.start skips the first startAt products in the search. The min is 1 and max it can skip is 1000.
             
-            while (startAt < 1000) // TODO: Insert a break if the CALLAPI start returning nothing.
+            while (startAt < 250) // TODO: Insert a break if the CallAPI starts returning nothing.
             {
-                startAt += 50; // We can get a response containing 50 products at most, so that's why we have to keep looping until we hit 1000.
+                startAt += 50; // We can get a response containing 50 products at most, so that's why we have to keep looping until we hit 250.
                 JObject jObject = JObject.Parse(result);
                 jObjectResult.Merge(jObject); // Merges our json strings together.
 
