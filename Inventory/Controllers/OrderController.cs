@@ -42,5 +42,11 @@ namespace Inventory.Controllers
             inventoryContext.SaveChanges();
             return $"Order at id of {o.OrderId} has been updated.";
         }
+        [HttpGet("getOrdersByUserId/{id}")]
+        public List<Order> getOrdersByUserId(int id)
+        {
+            List<Order> orders = inventoryContext.Orders.Where(o => o.UserId == id).ToList();
+            return orders;
+        }
     }
 }
