@@ -16,7 +16,7 @@ namespace Inventory.Controllers
         }
 
         [HttpPost("createOrder")]
-        public void createProduct(Order newOrder)
+        public void createOrder(Order newOrder)
         {
             inventoryContext.Orders.Add(newOrder);
             inventoryContext.SaveChanges();
