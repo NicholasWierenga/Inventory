@@ -55,6 +55,8 @@ export class UserService {
   }
 
   testLogin(): void {
+    this.badLogin = false;
+    
     this.loggedInUser = this.allUsers[0];
   }
 

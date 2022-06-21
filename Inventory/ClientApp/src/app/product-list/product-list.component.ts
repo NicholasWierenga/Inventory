@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
@@ -11,22 +10,21 @@ import { UserService } from '../user.service';
 })
 
 export class ProductListComponent implements OnInit {
-  fullList!: Product;
-  searchedList!: Product;
   term: string = "yogurt"; // Must have 3 or more characters in order to work.
   locationId: string = "01400441"; // 8 digits, needed for fulfillment and pricing search
   productId: string = "";
   brand: string = "";
-  limit: number = 5;
   allUsers!: User[];
+  badLocationID: boolean = false;
 
-  constructor( private productService: ProductService, public userService: UserService ) { }
+  constructor( public productService: ProductService, public userService: UserService ) { }
 
   // We may want to add a form to the HTML so we aren't constantly calling the api everytime we update any of the parameters.
   searchProducts(term: string, locationId: string, productId: string, brand: string): void {
     this.productService.searchProducts(term, locationId, productId, brand).subscribe((response) => {
-      this.fullList = response;
-      this.searchedList = response;
+      this.productService.fullList = response;
+      this.productService.searchedList = response;
+      this.productService.mergeProductProductInv();
       this.searchForFulfillment();
     });
   }
@@ -35,17 +33,24 @@ export class ProductListComponent implements OnInit {
   // these, but that feature gives all the ones matching your parameters and then products that do not match your search
   // until the list of products reaches the limit set by the user. This method shows only items that match whatever the user wants.
   searchForFulfillment(): void {
+    this.badLocationID = false;
+    
     let curbsideCheckBox: any = document.getElementById("curbside");
     let deliveryCheckBox: any = document.getElementById("delivery");
     let inStoreCheckBox: any = document.getElementById("inStore");
     let shipToHomeCheckBox: any = document.getElementById("shipToHome");
+
+    if (this.locationId.length != 8 && (curbsideCheckBox.checked || deliveryCheckBox.checked || inStoreCheckBox.checked || shipToHomeCheckBox.checked)) {
+      this.badLocationID = true;
+      return;
+    }
     
-    this.searchedList = Object.assign({}, this.fullList);
+    this.productService.searchedList = Object.assign({}, this.productService.fullList);
 
     if (curbsideCheckBox.checked) { 
       // This works by taking each element of the data array, then each element of the item array found
       // in each data element, then checking if the fufillment has the correct bool value for curbside.
-      this.searchedList.data = this.searchedList.data.filter((item) =>
+      this.productService.searchedList.data = this.productService.searchedList.data.filter((item) =>
         item.items.filter((itemInfo) => 
           itemInfo.fulfillment.curbside
         ).length > 0
@@ -53,7 +58,7 @@ export class ProductListComponent implements OnInit {
     }
 
     if (deliveryCheckBox.checked) {
-      this.searchedList.data = this.searchedList.data.filter((item) =>
+      this.productService.searchedList.data = this.productService.searchedList.data.filter((item) =>
         item.items.filter((itemInfo) => 
           itemInfo.fulfillment.delivery
         ).length > 0
@@ -61,7 +66,7 @@ export class ProductListComponent implements OnInit {
     }
 
     if (inStoreCheckBox.checked) {
-      this.searchedList.data = this.searchedList.data.filter((item) =>
+      this.productService.searchedList.data = this.productService.searchedList.data.filter((item) =>
         item.items.filter((itemInfo) => 
           itemInfo.fulfillment.inStore
         ).length > 0
@@ -69,7 +74,7 @@ export class ProductListComponent implements OnInit {
     }
 
     if (shipToHomeCheckBox.checked) {
-      this.searchedList.data = this.searchedList.data.filter((item) =>
+      this.productService.searchedList.data = this.productService.searchedList.data.filter((item) =>
         item.items.filter((itemInfo) =>
           itemInfo.fulfillment.shipToHome
         ).length > 0
@@ -78,7 +83,13 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.searchProducts(this.term, this.locationId, this.productId, this.brand);
     this.userService.getUsers();
+
+    if (this.productService.searchedList === undefined) { // The search can take a fair bit of time, so we store the result in the service and only run this once.
+      this.searchProducts(this.term, this.locationId, this.productId, this.brand);
+    }
+
+    // We have this to make sure searchForFullfillment() doesn't causes us to lose data when go to another page and come back.
+    this.productService.searchedList = this.productService.fullList; 
   }
 }

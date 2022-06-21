@@ -11,7 +11,7 @@ namespace Inventory.Controllers
         readonly InventoryContext inventoryContext = new InventoryContext();
 
         [HttpGet("SearchProducts/&{term}&{locationId}&{productId}&{brand}")]
-        public Product SearchProducts(string term, string locationId, string productId , string brand)
+        public Product SearchProducts(string term, string locationId, string productId, string brand)
         { // TODO - think about making a new object that holds an product object and quantity remaining, sales figures for past 7, etc.
           // so we would want to return something looking like List<Object(Product, quantity remaining, sales figures)>
           // we need to get the database products table going then we can call in the db table and merge it with the Product list we get here.
@@ -19,16 +19,22 @@ namespace Inventory.Controllers
             return api.SearchProducts(term, locationId, productId, brand);
         }
 
+        //[HttpGet("SearchProductInv")]
+        //public ProductInv SearchProductsInv()
+        //{
+        //    return inventoryContext.Products;
+        //}
+
         [HttpGet("showAllProducts")]
         public List<ProductInv> showAllProducts()
         {
             return inventoryContext.Products.ToList();
         }
 
-        [HttpPost("createProduct")]
-        public void createProduct(ProductInv newProduct)
+        [HttpPost("createProductInvs")]
+        public void createProductInv(ProductInv newProductInvs)
         {
-            inventoryContext.Products.Add(newProduct);
+            inventoryContext.Products.Add(newProductInvs);
             inventoryContext.SaveChanges();
         }
 
@@ -45,9 +51,8 @@ namespace Inventory.Controllers
             ProductInv p = inventoryContext.Products.Find(id);
             p.ProductName = updatedProduct.ProductName;
             p.OnHand = updatedProduct.OnHand;
-            p.LowQuant = updatedProduct.LowQuant;
-            p.Description = updatedProduct.Description;
             p.Sales = updatedProduct.Sales;
+            p.ItemId = updatedProduct.ItemId;
 
             inventoryContext.Update(p);
             inventoryContext.SaveChanges();

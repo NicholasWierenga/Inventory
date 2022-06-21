@@ -1,4 +1,6 @@
-﻿public class Product
+﻿using Inventory.Models;
+
+public class Product
 {
     public Datum[] data { get; set; }
     public Meta meta { get; set; }
@@ -76,6 +78,7 @@ public class Item
     public Price price { get; set; }
     public string size { get; set; }
     public string soldBy { get; set; }
+    public ProductInv inventory { get; set; }
 }
 
 public class Fulfillment

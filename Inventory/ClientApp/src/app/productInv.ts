@@ -1,8 +1,7 @@
-export interface ProductInv {
-    id: number,
-    productName: string,
-    onHand: number,
-    lowQuant: boolean,
-    description: string,
-    sales: number
+export interface ProductInv { // This is a new object we are inserting into the Item interface.
+    id: number;
+    productName: string;
+    onHand: number;
+    sales: number;
+    itemId: string;
 }

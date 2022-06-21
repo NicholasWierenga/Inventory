@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from '../user';
 import { UserService } from '../user.service';
 
@@ -19,7 +20,7 @@ export class NewUserComponent implements OnInit {
   
   //TODO: Give something to indicate to the user if email was already taken or if they have too many or too few digits in the phone number.
   
-  constructor( public userService: UserService ) { }
+  constructor( public userService: UserService, private router: Router ) { }
 
   createNewUser(): void {
     this.badEmail = false;
@@ -44,19 +45,22 @@ export class NewUserComponent implements OnInit {
       return;
     }
 
-    this.userService.createUser(newUser).subscribe(() => 
-      this.getNewestUser()
-    );
+    this.userService.createUser(newUser).subscribe(() => {
+      this.getNewestUser();
+      this.router.navigate(['']); // Sends us back to the home page.
+    });
   }
 
   getNewestUser(): void { // For when we create a new user. It adds it onto the end of the array instead of us needing to call getAllUsers again.
-    this.userService.newestUser().subscribe((user) => 
-      this.userService.allUsers.push(user)
-    );
+    this.userService.newestUser().subscribe((user) => {
+      this.userService.allUsers.push(user);
+      this.userService.loggedInUser = user; // We also automatically login the user after account creation.
+    });
   }
 
   ngOnInit(): void {
-    this.userService.getUsers();
+    if (this.userService.allUsers.length === 0) {
+      this.userService.getUsers();
+    }
   }
-}  
-
+}
