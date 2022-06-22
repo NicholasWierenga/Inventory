@@ -28,20 +28,21 @@ export class ProductListComponent implements OnInit {
       this.productService.searchedList = response;
 
       this.productService.mergeProductProductInv();
-      this.searchForFulfillment();
+      this.checkBoxSearch();
     });
   }
 
   // Below is a function to filter our api call for a list of products. The api itself has a parameter that filters for
   // these, but that feature gives all the ones matching your parameters and then products that do not match your search
   // until the list of products reaches the limit set by the user. This method shows only items that match whatever the user wants.
-  searchForFulfillment(): void {
+  checkBoxSearch(): void {
     this.badLocationID = false;
     
     let curbsideCheckBox: any = document.getElementById("curbside");
     let deliveryCheckBox: any = document.getElementById("delivery");
     let inStoreCheckBox: any = document.getElementById("inStore");
     let shipToHomeCheckBox: any = document.getElementById("shipToHome");
+    let lowStockCheckBox: any = document.getElementById("lowStock");
 
     if (this.locationId.length != 8 && (curbsideCheckBox.checked || deliveryCheckBox.checked || inStoreCheckBox.checked || shipToHomeCheckBox.checked)) {
       this.badLocationID = true;
@@ -53,34 +54,42 @@ export class ProductListComponent implements OnInit {
     if (curbsideCheckBox.checked) { 
       // This works by taking each element of the data array, then each element of the item array found
       // in each data element, then checking if the fufillment has the correct bool value for curbside.
-      this.productService.searchedList.data = this.productService.searchedList.data.filter((item) =>
-        item.items.filter((itemInfo) => 
-          itemInfo.fulfillment.curbside
+      this.productService.searchedList.data = this.productService.searchedList.data.filter((data) =>
+      data.items.filter((item) => 
+        item.fulfillment.curbside
         ).length > 0
       ); // This doesn't give us an entirely new Product object, just overwrites what it has for the data array.
     }
 
     if (deliveryCheckBox.checked) {
-      this.productService.searchedList.data = this.productService.searchedList.data.filter((item) =>
-        item.items.filter((itemInfo) => 
-          itemInfo.fulfillment.delivery
-        ).length > 0
+      this.productService.searchedList.data = this.productService.searchedList.data.filter((data) =>
+        data.items.filter((item) => 
+          item.fulfillment.delivery
+          ).length > 0
       );
     }
 
     if (inStoreCheckBox.checked) {
-      this.productService.searchedList.data = this.productService.searchedList.data.filter((item) =>
-        item.items.filter((itemInfo) => 
-          itemInfo.fulfillment.inStore
-        ).length > 0
+      this.productService.searchedList.data = this.productService.searchedList.data.filter((data) =>
+        data.items.filter((item) => 
+          item.fulfillment.inStore
+          ).length > 0
       );
     }
 
     if (shipToHomeCheckBox.checked) {
-      this.productService.searchedList.data = this.productService.searchedList.data.filter((item) =>
-        item.items.filter((itemInfo) =>
-          itemInfo.fulfillment.shipToHome
-        ).length > 0
+      this.productService.searchedList.data = this.productService.searchedList.data.filter((data) =>
+        data.items.filter((item) =>
+          item.fulfillment.shipToHome
+          ).length > 0
+      );
+    }
+
+    if (lowStockCheckBox.checked) {
+      this.productService.searchedList.data = this.productService.searchedList.data.filter((data) =>
+        data.items.filter((item) =>
+          item.inventory.onHand <= item.inventory.sales
+          ).length > 0
       );
     }
   }
