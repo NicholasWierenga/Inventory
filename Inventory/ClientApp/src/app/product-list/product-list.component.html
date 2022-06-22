@@ -38,14 +38,15 @@
     To search using the checkboxes you must enter a valid 8 digit location ID.
     <br>
   </p>
-  Available for curbside pickup: <input type="checkbox" id="curbside" (click)="searchForFulfillment()">
+  Available for curbside pickup: <input type="checkbox" id="curbside" (click)="checkBoxSearch()">
   <br>
-  Available for delivery: <input type="checkbox" id="delivery" (click)="searchForFulfillment()">
+  Available for delivery: <input type="checkbox" id="delivery" (click)="checkBoxSearch()">
   <br>
-  Available for in store pickup: <input type="checkbox" id="inStore" (click)="searchForFulfillment()">
+  Available for in store pickup: <input type="checkbox" id="inStore" (click)="checkBoxSearch()">
   <br>
-  Available for ship to home: <input type="checkbox" id="shipToHome" (click)="searchForFulfillment()">
+  Available for ship to home: <input type="checkbox" id="shipToHome" (click)="checkBoxSearch()">
   <br>
+  Low stock: <input type="checkbox" id="lowStock" (click)="checkBoxSearch()">
   
   <span *ngIf="productService.searchedList.data.length > 0; else emptySearch">
     Number of results: {{productService.searchedList.data.length}}
@@ -91,7 +92,7 @@
  <mat-accordion [multi]="true">
 
   <mat-expansion-panel style = "border: 1px solid;">
-    <mat-expansion-panel-header>
+    <mat-expansion-panel-header [ngStyle]="{'background-color':(item.inventory.onHand < item.inventory.sales)?'red':'whitesmoke'}">
       <mat-panel-title>{{item.inventory.productName}}</mat-panel-title>
       <mat-panel-description>View Item Info</mat-panel-description>
     </mat-expansion-panel-header>
