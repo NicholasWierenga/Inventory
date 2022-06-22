@@ -1,0 +1,30 @@
+<form (ngSubmit)="createNewUser()">
+    <span *ngIf="badFirstName" style="color: red;">
+        You need to enter a first name.
+        <br>
+    </span>
+    <input type="text" placeholder="First name" [(ngModel)]="firstName" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" placeholder="Last name" [(ngModel)]="lastName" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" placeholder="Address" [(ngModel)]="address" [ngModelOptions]="{standalone: true}">
+    <br>
+    <span *ngIf="badEmail" style="color: red;">
+        This email has been taken.
+        <br>
+    </span>
+    <input type="email" placeholder="Email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+    <br>
+    <span *ngIf="badPhoneNumber" style="color: red;">
+        Phone number must be 10 digits.
+        <br>
+    </span>
+    <input type="number" placeholder="Phone number" [(ngModel)]="phone" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="submit" value="Submit">
+</form>
+<br>
+
+<p *ngFor="let user of this.userService.allUsers">
+    {{user.id}}: {{user.firstName}} {{user.lastName}}
+</p>

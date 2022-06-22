@@ -66,6 +66,7 @@ export interface Item {
     price: Price;
     size: string;
     soldBy: string;
+    inventory: ProductInv; // This is where our info goes. It links up with the itemId
 }
 
 export interface Fulfillment {
@@ -80,3 +81,10 @@ export interface Price {
     promot: number;
 }
 
+export interface ProductInv { // This is a new object we are inserting into the Item interface.
+    id: number;
+    productName: string;
+    onHand: number;
+    sales: number;
+    itemId: string;
+}

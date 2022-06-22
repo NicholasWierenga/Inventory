@@ -1,17 +1,87 @@
-<span *ngIf="searchedList.data !== null; else emptySearch">
-  <div *ngFor="let product of searchedList.data">
-    <section>
-      {{product.productId}}
-      <br>
-      {{product.brand}}
-      <br>
-      {{product.categories}}
+<div>
+  <p *ngIf="this.userService.badLogin" style="color: red;">
+    Your login information is incorrect. Please try again.
+    <br>
+  </p>
+
+  <p *ngIf="this.userService.loggedInUser === undefined; else loggedIn">
+    <input type="text" [(ngModel)]="this.userService.email" maxlength="255" placeholder="Email">
+    <button (click)="this.userService.login(this.userService.email)">Login</button>
+    <br>
+    <button (click)="this.userService.testLogin()">Login for testing</button>
+  </p>
+  
+  <ng-template #loggedIn>
+    <p>
+      Logged in as: {{this.userService.loggedInUser.firstName}}
+      <button (click)="this.userService.logout()">Logout</button>
+    </p>
+  </ng-template> 
+  <br>
+</div>
+
+<div>
+  <form (ngSubmit)="searchProducts(term, locationId, productId, brand)">
+    <input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" name="search" placeholder="Location ID" [(ngModel)]="locationId" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" name="search" placeholder="Product ID" [(ngModel)]="productId" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="text" name="search" placeholder="Brand" [(ngModel)]="brand" [ngModelOptions]="{standalone: true}">
+    <br>
+    <input type="submit" value="Search">
+    <br>
+  </form>
+  
+  <p *ngIf="locationId.length !== 8 && locationId.length !== 0" style="color: red;">
+    To search using the checkboxes you must enter a valid 8 digit location ID.
+    <br>
+  </p>
+  Available for curbside pickup: <input type="checkbox" id="curbside" (click)="searchForFulfillment()">
+  <br>
+  Available for delivery: <input type="checkbox" id="delivery" (click)="searchForFulfillment()">
+  <br>
+  Available for in store pickup: <input type="checkbox" id="inStore" (click)="searchForFulfillment()">
+  <br>
+  Available for ship to home: <input type="checkbox" id="shipToHome" (click)="searchForFulfillment()">
+  <br>
+  
+  <span *ngIf="productService.searchedList.data.length > 0; else emptySearch">
+    Number of results: {{productService.searchedList.data.length}}
+    
+    <section *ngFor="let product of productService.searchedList.data" style="border: 1px solid;">
+     <span *ngFor="let item of product.items">
+        {{product.productId}}
+        <br>
+        {{product.brand}}
+        <br>
+        {{product.categories}}
+        <br>
+        Name of product: {{item.inventory.productName}}
+        <br>
+        Curbside pickup: {{item.fulfillment.curbside}}
+        <br>
+        Delivery: {{item.fulfillment.delivery}}
+        <br>
+        In store pickup: {{item.fulfillment.inStore}}
+        <br>
+        Ship to home: {{item.fulfillment.shipToHome}}
+        <br>
+        Sales in past week: {{item.inventory.sales}}
+        <br>
+        Amount in stock: {{item.inventory.onHand}}
+        <br>
+        <p *ngIf="item.inventory.onHand < item.inventory.sales" style="color: red;">
+          This item is nearly out of stock.
+        </p>
+        <button (click)="orderProduct(item)">Order</button>
+      </span>
     </section>
     <br>
-  </div>
-</span>
-
-<ng-template #emptySearch>
-  Your search was empty.
-</ng-template>
-
+  </span>
+  
+  <ng-template #emptySearch>
+      Your search is empty.
+  </ng-template>
+</div>

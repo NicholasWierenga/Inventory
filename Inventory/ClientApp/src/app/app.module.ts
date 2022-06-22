@@ -6,29 +6,26 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProductListComponent } from './product-list/product-list.component';
+import { NewUserComponent } from './new-user/new-user.component';
+import { UserOrdersComponent } from './user-orders/user-orders.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
-    ProductListComponent
+    ProductListComponent,
+    NewUserComponent,
+    UserOrdersComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'product-list', component: ProductListComponent }
+      { path: '', component: ProductListComponent, pathMatch: 'full' },
+      { path: 'new-user', component: NewUserComponent },
+      { path: 'user-orders', component: UserOrdersComponent }
     ])
   ],
   providers: [],
