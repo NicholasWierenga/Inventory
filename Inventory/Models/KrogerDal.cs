@@ -68,7 +68,7 @@ namespace Inventory.Models
             url += $"&filter.limit=50";
             var jObjectResult = new JObject();
             string result = CallAPI(url); // filter.start skips the first startAt products in the search. The min is 1 and max it can skip is 1000.
-            
+
             while (startAt < 250) // TODO: Insert a break if the CallAPI starts returning nothing.
             {
                 startAt += 50; // We can get a response containing 50 products at most, so that's why we have to keep looping until we hit 250.

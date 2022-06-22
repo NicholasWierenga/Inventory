@@ -25,7 +25,7 @@ import { UserOrdersComponent } from './user-orders/user-orders.component';
     RouterModule.forRoot([
       { path: '', component: ProductListComponent, pathMatch: 'full' },
       { path: 'new-user', component: NewUserComponent },
-      {path: 'user-orders', component: UserOrdersComponent}
+      { path: 'user-orders', component: UserOrdersComponent }
     ])
   ],
   providers: [],

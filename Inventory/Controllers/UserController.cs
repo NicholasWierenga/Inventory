@@ -33,7 +33,7 @@ namespace Inventory.Controllers
         [HttpDelete("deleteUser/{id}")]
         public void deleteUser(int id) // This isn't used anywhere and can be deleted if we want.
         {
-            inventoryContext.Remove(inventoryContext.Users.Find(id));
+            inventoryContext.Users.Remove(inventoryContext.Users.Find(id));
             inventoryContext.SaveChanges();
         }
     }

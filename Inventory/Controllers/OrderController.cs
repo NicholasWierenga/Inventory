@@ -22,6 +22,13 @@ namespace Inventory.Controllers
             inventoryContext.SaveChanges();
         }
 
+        [HttpPost("createUser")]
+        public void createUser(User newUser)
+        {
+            inventoryContext.Users.Add(newUser);
+            inventoryContext.SaveChanges();
+        }
+
         [HttpDelete("deleteOrder/{id}")]
         public void deleteOrder(int id) 
         {
@@ -29,16 +36,15 @@ namespace Inventory.Controllers
             inventoryContext.SaveChanges();
         }
 
-        [HttpPost("updateOrder/{id}")]
+        [HttpPut("updateOrder/{id}")]
         public string updateOrder(int id, Order updatedOrder)
         {
             Order o = inventoryContext.Orders.Find(id);
 
             o.Quantity = updatedOrder.Quantity;
             o.OrderDate = updatedOrder.OrderDate;
-            o.User = updatedOrder.User;
 
-            inventoryContext.Update(o);
+            inventoryContext.Orders.Update(o);
             inventoryContext.SaveChanges();
             return $"Order at id of {o.OrderId} has been updated.";
         }

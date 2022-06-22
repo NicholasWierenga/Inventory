@@ -13,7 +13,7 @@ export class NewUserComponent implements OnInit {
   lastName: string = "";
   address: string = "";
   email: string = "";
-  phone: number = undefined!;
+  phone!: number;
   badEmail: boolean = false;
   badFirstName: boolean = false;
   badPhoneNumber: boolean = false;

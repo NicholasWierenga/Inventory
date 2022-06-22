@@ -1,1 +1,62 @@
-<p>user-orders works!</p>
+<span *ngIf="this.item !== undefined; else noItem">
+    <div>
+        <p *ngIf="this.userService.badLogin" style="color: red;">
+          Your login information is incorrect. Please try again.
+          <br>
+        </p>
+    
+        <p *ngIf="this.userService.loggedInUser === undefined; else loggedIn">
+          <input type="text" [(ngModel)]="this.userService.email" maxlength="255" placeholder="Email">
+          <button (click)="this.userService.login(this.userService.email)">Login</button>
+          <br>
+          <button (click)="this.userService.testLogin()">Login for testing</button>
+        </p>
+        
+        <ng-template #loggedIn>
+          <p>
+            Logged in as: {{this.userService.loggedInUser.firstName}}
+            <button (click)="this.userService.logout()">Logout</button>
+          </p>
+        </ng-template> 
+    </div>
+
+    <span *ngIf="this.userService.loggedInUser !== undefined; else notLoggedIn">
+        Item name: {{item.inventory.productName}}
+        <br>
+        Regular price: {{item.price.regular}}
+        <br>
+        Supplier: {{item.soldBy}}
+        <br>
+        Current quantity: {{item.inventory.onHand}}
+        <br>
+        Sales in past week: {{item.inventory.sales}}
+        <br>
+        
+        <span *ngIf="badQuantity">
+            Quantity ordered must be at least one.
+            <br>
+        </span>
+
+        <form (ngSubmit)="orderProduct()">
+            <input type="number" [(ngModel)]="amountOrdered" placeholder="Amount to order"  [ngModelOptions]="{standalone: true}">
+            <input type="submit" value="Order">
+        </form>
+
+        <span *ngIf="amountOrdered !== undefined">
+            <br>
+            Total retail value ordered: {{floor(amountOrdered * item.price.regular)}}
+        </span>
+    </span>
+</span>
+
+<ng-template #notLoggedIn style="color: red;">
+    <p>
+        You must login to order a product.
+    </p>
+</ng-template>
+
+<ng-template #noItem style="color: red;">
+    <p>
+      There is no item to display here.
+    </p>
+</ng-template>
