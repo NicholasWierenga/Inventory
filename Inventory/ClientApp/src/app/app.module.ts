@@ -15,7 +15,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { MatExpansionModule} from '@angular/material/expansion';
 
@@ -24,7 +24,7 @@ import { MatExpansionModule} from '@angular/material/expansion';
     AppComponent,
     NavMenuComponent,
     ProductListComponent,
-    NewUserComponent,
+     NewUserComponent,
     UserOrdersComponent
   ],
   imports: [
