@@ -92,7 +92,7 @@
  <mat-accordion [multi]="true">
 
   <mat-expansion-panel style = "border: 1px solid;">
-    <mat-expansion-panel-header>
+    <mat-expansion-panel-header [ngStyle]="{'background-color':(item.inventory.onHand < item.inventory.sales)?'red':'whitesmoke'}">
       <mat-panel-title>{{item.inventory.productName}}</mat-panel-title>
       <mat-panel-description>View Item Info</mat-panel-description>
     </mat-expansion-panel-header>
