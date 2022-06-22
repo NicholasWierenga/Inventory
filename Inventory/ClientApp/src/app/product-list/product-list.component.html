@@ -50,7 +50,7 @@
   <span *ngIf="productService.searchedList.data.length > 0; else emptySearch">
     Number of results: {{productService.searchedList.data.length}}
     
-    <section *ngFor="let product of productService.searchedList.data" style="border: 1px solid;">
+    <!-- <section *ngFor="let product of productService.searchedList.data" style="border: 1px solid;">
      <span *ngFor="let item of product.items">
         {{product.productId}}
         <br>
@@ -78,10 +78,39 @@
         <button (click)="orderProduct(item)">Order</button>
       </span>
     </section>
-    <br>
+    <br> -->
   </span>
   
   <ng-template #emptySearch>
       Your search is empty.
   </ng-template>
 </div>
+
+<section *ngFor="let product of productService.searchedList.data" style="border: 1px solid;">
+  <span *ngFor="let item of product.items">
+ <mat-accordion [multi]="true">
+
+  <mat-expansion-panel style = "border: 1px solid;">
+    <mat-expansion-panel-header>
+      <mat-panel-title>{{item.inventory.productName}}</mat-panel-title>
+      <mat-panel-description>View Item Info</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <br />
+    <br />
+
+    <div class="mat">
+      <p>Product ID: {{product.productId}}</p>
+      <p>Brand: {{product.brand}}</p>
+      <p>Category: {{product.categories}}</p>
+      <p>Weekly Sales: {{item.inventory.sales}}</p>
+      <p>Quantity in Stock: {{item.inventory.onHand}}</p>
+
+    </div>
+
+
+  </mat-expansion-panel>
+
+</mat-accordion> 
+</span>
+</section>

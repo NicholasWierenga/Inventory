@@ -10,18 +10,34 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { NewUserComponent } from './new-user/new-user.component';
 import { UserOrdersComponent } from './user-orders/user-orders.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+import { MatExpansionModule} from '@angular/material/expansion';
+
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     ProductListComponent,
-    NewUserComponent,
+     NewUserComponent,
     UserOrdersComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    BrowserAnimationsModule,
+    MatBadgeModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatProgressBarModule,
+    MatExpansionModule,
     RouterModule.forRoot([
       { path: '', component: ProductListComponent, pathMatch: 'full' },
       { path: 'new-user', component: NewUserComponent },
