@@ -105,6 +105,10 @@
       <p>Category: {{product.categories}}</p>
       <p>Weekly Sales: {{item.inventory.sales}}</p>
       <p>Quantity in Stock: {{item.inventory.onHand}}</p>
+      <p *ngIf="item.inventory.onHand < item.inventory.sales" style="color: red;">
+        This item is nearly out of stock.
+      </p>
+      <button (click)="orderProduct(item)">Order</button>
 
     </div>
 
