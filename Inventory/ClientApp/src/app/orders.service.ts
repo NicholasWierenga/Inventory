@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Order } from './order';
 
 @Injectable({
@@ -7,20 +8,27 @@ import { Order } from './order';
 })
 export class OrdersService {
   urlRoot: string;
+  headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8'); // We don't need headers or requestOption, but it makes console less bad.
+  requestOptions: Object = {
+    headers: this.headers
+  };
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.urlRoot = baseUrl;
-   }
-   getOrdersByUserId(id:number){
-    return this.http.get<Order[]>(this.urlRoot + "orders/getOrdersById/"+id);
-   }
-   updateOrder(id:number, body: Order){
-    return this.http.post<String>(this.urlRoot + "orders/updateOrder/"+id,body);
-   }
-   createOrder(o:Order){
-    return this.http.put<String>(this.urlRoot + "orders/createOrder/", o);
-   }
-   deleteOrder(id:number){
-    return this.http.delete<String>(this.urlRoot + "orders/deleteOrder/"+id);
-   }
+  }
+   getOrdersByUserId(id:number): Observable<Order[]> {
+    return this.http.get<Order[]>(this.urlRoot + "order/getOrdersById/"+id, this.requestOptions);
+  }
+
+   updateOrder(id:number, body: Order): Observable<Order> {
+    return this.http.put<Order>(this.urlRoot + "order/updateOrder/"+ id, body, this.requestOptions);
+  }
+
+   createOrder(order:Order): Observable<Order> {
+    return this.http.post<Order>(this.urlRoot + "order/createOrder", order, this.requestOptions);
+  }
+  
+   deleteOrder(id:number): Observable<Order> {
+    return this.http.delete<Order>(this.urlRoot + "order/deleteOrder/"+ id, this.requestOptions);
+  }
 }

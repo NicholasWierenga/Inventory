@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Item, ProductInv } from '../product';
+import { Router } from '@angular/router';
 import { ProductService } from '../product.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
@@ -14,10 +16,10 @@ export class ProductListComponent implements OnInit {
   locationId: string = "01400441"; // 8 digits, needed for fulfillment and pricing search
   productId: string = "";
   brand: string = "";
-  allUsers!: User[];
+  allUsers: User[] = [];
   badLocationID: boolean = false;
 
-  constructor( public productService: ProductService, public userService: UserService ) { }
+  constructor( public productService: ProductService, public userService: UserService, private router: Router  ) { }
 
   // We may want to add a form to the HTML so we aren't constantly calling the api everytime we update any of the parameters.
   searchProducts(term: string, locationId: string, productId: string, brand: string): void {
@@ -81,6 +83,11 @@ export class ProductListComponent implements OnInit {
         ).length > 0
       );
     }
+  }
+
+  orderProduct(item: Item) {
+    this.productService.item = item;
+    this.router.navigate(['/user-orders']); // Sends us to orders page. 
   }
 
   ngOnInit(): void {

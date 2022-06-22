@@ -14,8 +14,7 @@ export class UserService {
   urlRoot: string;
   headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8'); // We don't need headers or requestOption, but it makes console less bad.
   requestOptions: Object = {
-    headers: this.headers,
-    responseType: 'text'
+    headers: this.headers
   };
 
   constructor (private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {

@@ -19,12 +19,6 @@ namespace Inventory.Controllers
             return api.SearchProducts(term, locationId, productId, brand);
         }
 
-        //[HttpGet("SearchProductInv")]
-        //public ProductInv SearchProductsInv()
-        //{
-        //    return inventoryContext.Products;
-        //}
-
         [HttpGet("showAllProducts")]
         public List<ProductInv> showAllProducts()
         {
@@ -48,15 +42,15 @@ namespace Inventory.Controllers
         [HttpPost("updateProduct/{id}")]
         public string updateProduct(int id, ProductInv updatedProduct)
         {
-            ProductInv p = inventoryContext.Products.Find(id);
-            p.ProductName = updatedProduct.ProductName;
-            p.OnHand = updatedProduct.OnHand;
-            p.Sales = updatedProduct.Sales;
-            p.ItemId = updatedProduct.ItemId;
+            ProductInv productInv = inventoryContext.Products.Find(id);
+            productInv.ProductName = updatedProduct.ProductName;
+            productInv.OnHand = updatedProduct.OnHand;
+            productInv.Sales = updatedProduct.Sales;
+            productInv.ItemId = updatedProduct.ItemId;
 
-            inventoryContext.Update(p);
+            inventoryContext.Products.Update(productInv);
             inventoryContext.SaveChanges();
-            return $"{p.ProductName} has been updated.";
+            return $"{productInv.ProductName} has been updated.";
         }
     }
 }

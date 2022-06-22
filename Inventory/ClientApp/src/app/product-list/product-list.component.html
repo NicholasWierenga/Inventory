@@ -5,7 +5,7 @@
   </p>
 
   <p *ngIf="this.userService.loggedInUser === undefined; else loggedIn">
-    <input type="text" [(ngModel)]="this.userService.email" maxlength="30" placeholder="Email">
+    <input type="text" [(ngModel)]="this.userService.email" maxlength="255" placeholder="Email">
     <button (click)="this.userService.login(this.userService.email)">Login</button>
     <br>
     <button (click)="this.userService.testLogin()">Login for testing</button>
@@ -51,14 +51,13 @@
     Number of results: {{productService.searchedList.data.length}}
     
     <section *ngFor="let product of productService.searchedList.data" style="border: 1px solid;">
-      
-      {{product.productId}}
-      <br>
-      {{product.brand}}
-      <br>
-      {{product.categories}}
-      <br>
-      <span *ngFor="let item of product.items">
+     <span *ngFor="let item of product.items">
+        {{product.productId}}
+        <br>
+        {{product.brand}}
+        <br>
+        {{product.categories}}
+        <br>
         Name of product: {{item.inventory.productName}}
         <br>
         Curbside pickup: {{item.fulfillment.curbside}}
@@ -76,6 +75,7 @@
         <p *ngIf="item.inventory.onHand < item.inventory.sales" style="color: red;">
           This item is nearly out of stock.
         </p>
+        <button (click)="orderProduct(item)">Order</button>
       </span>
     </section>
     <br>

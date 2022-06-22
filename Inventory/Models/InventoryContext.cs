@@ -35,6 +35,8 @@ namespace Inventory.Models
         {
             modelBuilder.Entity<Order>(entity =>
             {
+                entity.ToTable("Orders");
+
                 entity.Property(e => e.OrderDate).HasColumnType("date");
 
                 entity.HasOne(d => d.User)
@@ -43,11 +45,12 @@ namespace Inventory.Models
                     .HasConstraintName("FK__Orders__UserId__60A75C0F");
             });
 
+
             modelBuilder.Entity<ProductInv>(entity =>
             {
                 entity.ToTable("Product");
 
-                entity.Property(e => e.ItemId).HasMaxLength(30);
+                entity.Property(e => e.ItemId).HasMaxLength(255);
 
                 entity.Property(e => e.ProductName).HasMaxLength(255);
             });
@@ -56,13 +59,13 @@ namespace Inventory.Models
             {
                 entity.ToTable("User");
 
-                entity.Property(e => e.Address).HasMaxLength(60);
+                entity.Property(e => e.Address).HasMaxLength(255);
 
-                entity.Property(e => e.Email).HasMaxLength(30);
+                entity.Property(e => e.Email).HasMaxLength(255);
 
-                entity.Property(e => e.FirstName).HasMaxLength(25);
+                entity.Property(e => e.FirstName).HasMaxLength(255);
 
-                entity.Property(e => e.LastName).HasMaxLength(25);
+                entity.Property(e => e.LastName).HasMaxLength(255);
             });
 
             OnModelCreatingPartial(modelBuilder);
