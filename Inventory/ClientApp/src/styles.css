@@ -44,3 +44,8 @@ input[type=number]{
   background-color: whitesmoke;
   padding: 1px;
 }
+mat-panel-description{
+  flex-direction:row-reverse;
+  justify-content:space-between;
+}
+

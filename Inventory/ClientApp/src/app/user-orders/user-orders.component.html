@@ -23,7 +23,9 @@
     <span *ngIf="this.userService.loggedInUser !== undefined; else notLoggedIn">
         Item name: {{item.inventory.productName}}
         <br>
+
         Regular price: {{item.price.regular | currency: 'USD'}}
+
         <br>
         Supplier: {{item.soldBy}}
         <br>
