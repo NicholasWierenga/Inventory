@@ -43,6 +43,10 @@ namespace Inventory.Models
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK__Orders__UserId__60A75C0F");
+
+                entity.Property(e => e.Supplier).HasMaxLength(80);
+
+                entity.Property(e => e.locationId).HasMaxLength(8);
             });
 
 

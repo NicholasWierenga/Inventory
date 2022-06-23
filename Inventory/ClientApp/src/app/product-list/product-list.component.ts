@@ -36,7 +36,7 @@ export class ProductListComponent implements OnInit {
         this.checkBoxSearch();
       });
     });
-  }
+  } // add a button that when clicked, orders last week's sales for all items low stocked
 
   // Below is a function to filter our api call for a list of products. The api itself has a parameter that filters for
   // these, but that feature gives all the ones matching your parameters and then products that do not match your search
