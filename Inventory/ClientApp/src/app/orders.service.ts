@@ -16,19 +16,20 @@ export class OrdersService {
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.urlRoot = baseUrl;
   }
-   getOrdersByUserId(id:number): Observable<Order[]> {
+
+  getOrdersByUserId(id: number): Observable<Order[]> {
     return this.http.get<Order[]>(this.urlRoot + "order/getOrdersById/"+id, this.requestOptions);
   }
 
-   updateOrder(id:number, body: Order): Observable<Order> {
+  updateOrder(id: number, body: Order): Observable<Order> {
     return this.http.put<Order>(this.urlRoot + "order/updateOrder/"+ id, body, this.requestOptions);
   }
 
-   createOrder(order:Order): Observable<Order> {
+  createOrder(order: Order): Observable<Order> {
     return this.http.post<Order>(this.urlRoot + "order/createOrder", order, this.requestOptions);
   }
   
-   deleteOrder(id:number): Observable<Order> {
+  deleteOrder(id: number): Observable<Order> {
     return this.http.delete<Order>(this.urlRoot + "order/deleteOrder/"+ id, this.requestOptions);
   }
 }

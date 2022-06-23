@@ -10,5 +10,6 @@ namespace Inventory.Models
         public int? OnHand { get; set; }
         public int? Sales { get; set; }
         public string? ItemId { get; set; }
+        public string? locationID { get; set; }
     }
 }

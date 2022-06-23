@@ -22,9 +22,9 @@
 
 <div>
   <form (ngSubmit)="searchProducts(term, locationId, productId, brand)">
-    <input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" [ngModelOptions]="{standalone: true}">
+    <input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" [ngModelOptions]="{standalone: true}" required>
     <br>
-    <input type="text" name="search" placeholder="Location ID" [(ngModel)]="locationId" [ngModelOptions]="{standalone: true}">
+    <input type="text" name="search" placeholder="Location ID" [(ngModel)]="locationId" [ngModelOptions]="{standalone: true}" required>
     <br>
     <input type="text" name="search" placeholder="Product ID" [(ngModel)]="productId" [ngModelOptions]="{standalone: true}">
     <br>
@@ -103,6 +103,7 @@
     <div class="mat">
       <p>Price: {{item.price.regular | currency:'USD'}}</p> <!--display as currency!--> 
       <p>Product ID: {{product.productId}}</p>
+      <p>Store location: {{item.inventory.locationID}}</p>
       <p>Brand: {{product.brand}}</p>
       <p>Category: {{product.categories}}</p>
       <p>Weekly Sales: {{item.inventory.sales}}</p>

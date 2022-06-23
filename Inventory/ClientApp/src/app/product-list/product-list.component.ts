@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ProductService } from '../product.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
+import { LocationService } from '../location.service';
 
 @Component({
   selector: 'app-product-list',
@@ -19,7 +20,8 @@ export class ProductListComponent implements OnInit {
   allUsers: User[] = [];
   badLocationID: boolean = false;
 
-  constructor( public productService: ProductService, public userService: UserService, private router: Router  ) { }
+  constructor( public productService: ProductService, public userService: UserService,
+    private router: Router, private locationService: LocationService  ) { }
 
   // We may want to add a form to the HTML so we aren't constantly calling the api everytime we update any of the parameters.
   searchProducts(term: string, locationId: string, productId: string, brand: string): void {
@@ -27,8 +29,12 @@ export class ProductListComponent implements OnInit {
       this.productService.fullList = response;
       this.productService.searchedList = response;
 
-      this.productService.mergeProductProductInv();
-      this.checkBoxSearch();
+      this.locationService.getLocation(locationId).subscribe(location => { // gets our location for the items we'll be looking at
+        this.locationService.location = location;
+        
+        this.productService.mergeProductProductInv();
+        this.checkBoxSearch();
+      });
     });
   }
 
@@ -44,7 +50,8 @@ export class ProductListComponent implements OnInit {
     let shipToHomeCheckBox: any = document.getElementById("shipToHome");
     let lowStockCheckBox: any = document.getElementById("lowStock");
 
-    if (this.locationId.length != 8 && (curbsideCheckBox.checked || deliveryCheckBox.checked || inStoreCheckBox.checked || shipToHomeCheckBox.checked)) {
+    if (this.locationId.length != 8 && (curbsideCheckBox.checked || deliveryCheckBox.checked ||
+      inStoreCheckBox.checked || shipToHomeCheckBox.checked || lowStockCheckBox.checked)) {
       this.badLocationID = true;
       return;
     }
