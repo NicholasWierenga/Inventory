@@ -53,6 +53,8 @@ namespace Inventory.Models
                 entity.Property(e => e.ItemId).HasMaxLength(255);
 
                 entity.Property(e => e.ProductName).HasMaxLength(255);
+
+                entity.Property(e => e.locationID).HasMaxLength(8);
             });
 
             modelBuilder.Entity<User>(entity =>

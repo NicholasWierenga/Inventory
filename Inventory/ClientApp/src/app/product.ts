@@ -87,4 +87,5 @@ export interface ProductInv { // This is a new object we are inserting into the 
     onHand: number;
     sales: number;
     itemId: string;
+    locationID: string;
 }

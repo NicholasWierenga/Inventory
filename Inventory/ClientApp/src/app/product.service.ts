@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { LocationService } from './location.service';
 import { Item, Product, ProductInv } from './product';
 
 @Injectable({
@@ -19,7 +20,7 @@ export class ProductService {
     headers: this.headers
   };
 
-  constructor (private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor (private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private locationService: LocationService) {
     this.urlRoot = baseUrl;
   }
 
@@ -64,20 +65,20 @@ export class ProductService {
   
   getProductInv(): void {
     this.http.get<ProductInv[]>(this.urlRoot + "product/showAllProducts", this.requestOptions).subscribe((response) => {
-      this.productInvArray = response
+      this.productInvArray = response;
     });
   }
 
   mergeProductProductInv(): void {
     this.fullList.data.map(data => {
       data.items.map(item => {
-        if (this.productInvArray.find((element) => item.itemId === element.itemId)) { // Checks if we already have a corresponding productInv in the db.
-          item.inventory = this.productInvArray.find((element) => item.itemId === element.itemId)!;
+        if (this.productInvArray.find(inventory => item.itemId === inventory.itemId && inventory.locationID == this.locationService.location.data.locationId ) !== undefined) { // Checks if we already have a corresponding productInv in the db.
+          item.inventory = this.productInvArray.find(inventory => item.itemId === inventory.itemId && this.locationService.location.data.locationId === inventory.locationID)!;
         }
         else {
           let newProductInv: ProductInv = {id: undefined!, productName: data.description, itemId: item.itemId, 
-            onHand: Math.floor(Math.random() * 250), sales: Math.floor(Math.random() * 35)};
-
+            onHand: Math.floor(Math.random() * 250), sales: Math.floor(Math.random() * 35), locationID: this.locationService.location.data.locationId};
+            
           this.newProductInvArray.push(newProductInv);
           item.inventory = newProductInv;
         }
@@ -88,7 +89,11 @@ export class ProductService {
 
     if (this.newProductInvArray.length > 0) {
       for(let i = 0; i < this.newProductInvArray.length; i++) {
-        this.createProductInv(this.newProductInvArray[i]).subscribe(() => this.getProductInv());
+        this.createProductInv(this.newProductInvArray[i]).subscribe(() => {
+          if ( i + 1 === this.newProductInvArray.length) {
+            this.getProductInv()
+          };
+        });
       }
     }
   }

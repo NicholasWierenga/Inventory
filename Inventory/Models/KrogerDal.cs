@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using LocationExtra;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -43,7 +44,6 @@ namespace Inventory.Models
             request.AddHeader("Authorization", "Bearer " + token.access_token);
 
             RestResponse response = client.Execute(request);
-            Console.WriteLine(response.Content);
             
             return response.Content;
         }
@@ -81,6 +81,17 @@ namespace Inventory.Models
             Product searchedProducts = JsonConvert.DeserializeObject<Product>(jObjectResult.ToString());
 
             return searchedProducts;
+        }
+
+        public Location getLocation(string locationId)
+        {
+            string url = $"locations/{locationId}";
+
+            string result = CallAPI(url);
+
+            Location location = JsonConvert.DeserializeObject<Location>(result);
+
+            return location;
         }
     }
 }

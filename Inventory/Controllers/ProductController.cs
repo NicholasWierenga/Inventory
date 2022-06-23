@@ -12,10 +12,7 @@ namespace Inventory.Controllers
 
         [HttpGet("SearchProducts/&{term}&{locationId}&{productId}&{brand}")]
         public Product SearchProducts(string term, string locationId, string productId, string brand)
-        { // TODO - think about making a new object that holds an product object and quantity remaining, sales figures for past 7, etc.
-          // so we would want to return something looking like List<Object(Product, quantity remaining, sales figures)>
-          // we need to get the database products table going then we can call in the db table and merge it with the Product list we get here.
-
+        {
             return api.SearchProducts(term, locationId, productId, brand);
         }
 
@@ -47,6 +44,7 @@ namespace Inventory.Controllers
             productInv.OnHand = updatedProduct.OnHand;
             productInv.Sales = updatedProduct.Sales;
             productInv.ItemId = updatedProduct.ItemId;
+            productInv.locationID = updatedProduct.locationID;
 
             inventoryContext.Products.Update(productInv);
             inventoryContext.SaveChanges();
