@@ -72,10 +72,11 @@ export class ProductService {
   mergeProductProductInv(): void {
     this.fullList.data.map(data => {
       data.items.map(item => {
-        if (this.productInvArray.find(inventory => item.itemId === inventory.itemId && inventory.locationID == this.locationService.location.data.locationId ) !== undefined) { // Checks if we already have a corresponding productInv in the db.
+        if (this.productInvArray.find(inventory => item.itemId === inventory.itemId && 
+          inventory.locationID == this.locationService.location.data.locationId )) { // Checks if we already have productInv with the correct itemId and locationId in the db.
           item.inventory = this.productInvArray.find(inventory => item.itemId === inventory.itemId && this.locationService.location.data.locationId === inventory.locationID)!;
         }
-        else {
+        else { // if the productInv doesn't exist, we create a new one with some random dummy data to work with.
           let newProductInv: ProductInv = {id: undefined!, productName: data.description, itemId: item.itemId, 
             onHand: Math.floor(Math.random() * 250), sales: Math.floor(Math.random() * 35), locationID: this.locationService.location.data.locationId};
             

@@ -87,8 +87,8 @@
   </ng-template>
 </div>
 
-<section *ngFor="let product of productService.searchedList.data" style="border: 1px solid;">
-  <span *ngFor="let item of product.items">
+<section *ngFor="let prodData of productService.searchedList.data" style="border: 1px solid;">
+  <span *ngFor="let item of prodData.items">
  <mat-accordion [multi]="true">
 
   <mat-expansion-panel style = "border: 1px solid;">
@@ -102,15 +102,12 @@
 
     <div class="mat">
       <p>Price: {{item.price.regular | currency:'USD'}}</p> <!--display as currency!--> 
-      <p>Product ID: {{product.productId}}</p>
+      <p>Product ID: {{prodData.productId}}</p>
       <p>Store location: {{item.inventory.locationID}}</p>
-      <p>Brand: {{product.brand}}</p>
-      <p>Category: {{product.categories}}</p>
+      <p>Brand: {{prodData.brand}}</p>
+      <p>Category: {{prodData.categories}}</p>
       <p>Weekly Sales: {{item.inventory.sales}}</p>
       <p>Quantity in Stock: {{item.inventory.onHand}}</p>
-      <p *ngIf="item.inventory.onHand < item.inventory.sales" style="color: red;">
-        This item is nearly out of stock.
-      </p>
       <button (click)="orderProduct(item)">Order</button>
 
     </div>

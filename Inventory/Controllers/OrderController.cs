@@ -41,8 +41,10 @@ namespace Inventory.Controllers
         {
             Order o = inventoryContext.Orders.Find(id);
 
+            o.Supplier = updatedOrder.Supplier;
             o.Quantity = updatedOrder.Quantity;
             o.OrderDate = updatedOrder.OrderDate;
+            o.locationId = updatedOrder.locationId;
 
             inventoryContext.Orders.Update(o);
             inventoryContext.SaveChanges();
