@@ -20,3 +20,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;background-c
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+input[type=text]{
+  border:1.5px solid black;
+  background-color: whitesmoke;
+  padding: 1px;
+}
+button{
+  background-color:#1f84e9;
+  color:azure;
+}
+input[type=submit]{
+  background-color:#1f84e9;
+  color:azure;
+}
