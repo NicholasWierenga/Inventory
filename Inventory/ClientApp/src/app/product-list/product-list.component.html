@@ -111,7 +111,7 @@
       <p *ngIf="item.inventory.onHand < item.inventory.sales" style="color: red;">
         This item is nearly out of stock.
       </p>
-      <button (click)="orderProduct(item)">Order</button>
+      <button (click)="orderProduct(item)" class="button1">Order</button>
 
     </div>
 
@@ -121,3 +121,4 @@
 </mat-accordion> 
 </span>
 </section>
+<br/>
