@@ -5,8 +5,9 @@ import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-new-user',
-  templateUrl: './new-user.component.html',
+  templateUrl: './new-user.component.html', 
   styleUrls: ['./new-user.component.css']
+
 })
 export class NewUserComponent implements OnInit {
   firstName: string = "" ;
@@ -17,6 +18,7 @@ export class NewUserComponent implements OnInit {
   badEmail: boolean = false;
   badFirstName: boolean = false;
   badPhoneNumber: boolean = false;
+
   
   //TODO: Give something to indicate to the user if email was already taken or if they have too many or too few digits in the phone number.
   
