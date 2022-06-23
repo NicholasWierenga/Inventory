@@ -48,6 +48,9 @@ export class UserOrdersComponent implements OnInit {
 
     fromItem.onHand -= this.amountTransferred; // subtracts our amount ordered from the transferring facility's current stock.
     this.productService.updateProductInv(fromItem.id, fromItem).subscribe(); // updates current sending facility's stock.
+
+    let blankAmount!: number;
+    this.amountTransferred = blankAmount; // Used to set the text in the input box to be blank so the placeholder text is shown again.
   }
 
   orderProduct(): void {
@@ -89,3 +92,6 @@ export class UserOrdersComponent implements OnInit {
     this.searchProductInv(); // gets us productInvArray that has matching itemId and differing locationID.
   }
 }
+
+
+// 
