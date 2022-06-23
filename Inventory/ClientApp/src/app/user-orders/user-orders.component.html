@@ -33,21 +33,53 @@
         <br>
         
         <span *ngIf="badQuantity">
-            Quantity ordered must be at least one.
-            <br>
+          Quantity ordered must be at least one.
+          <br>
         </span>
 
         <form (ngSubmit)="orderProduct()">
-            <input type="number" [(ngModel)]="amountOrdered" placeholder="Amount to order"  [ngModelOptions]="{standalone: true}">
-            <input type="submit" value="Order">
+          <input type="number" [(ngModel)]="amountOrdered" placeholder="Amount to order"  [ngModelOptions]="{standalone: true}">
+          <input type="submit" value="Order">
         </form>
 
         <span *ngIf="amountOrdered !== undefined">
+          <br>
+          Total retail value ordered: {{floor(amountOrdered * item.price.regular)}}
+        </span>
+        <br>
+        <span *ngIf="searchedProductInv.length > 0; else noItemsCanBeTransferred">
+          <section *ngFor="let productInv of searchedProductInv">
+            Location ID: {{productInv.locationID}}
             <br>
-            Total retail value ordered: {{floor(amountOrdered * item.price.regular) | currency:'USD'}}
+            Current quantity: {{productInv.onHand}}
+            <br>
+            Sales in past week: {{productInv.sales}}
+            <br>
+
+            <span *ngIf="badTransferQuantity">
+              Quantity ordered must be at least one.
+              <br>
+            </span>
+
+            <span *ngIf="badTransfer">
+              Transfer order was not submitted, this would cause the other chain to become low-stocked.
+              <br>
+            </span>
+
+            <form (ngSubmit)="transferProduct(productInv)">
+              <input type="number" [(ngModel)]="amountTransferred" placeholder="Amount to order"  [ngModelOptions]="{standalone: true}">
+              <input type="submit" value="Order">
+            </form>
+          </section>
         </span>
     </span>
 </span>
+
+<ng-template #noItemsCanBeTransferred>
+  No items were found in other chains that could be transferred.
+  <br>
+  Try searching other stores with similar search parameters to populate DB and then come back.
+</ng-template>
 
 <ng-template #notLoggedIn style="color: red;">
     <p>
