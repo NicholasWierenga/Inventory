@@ -46,7 +46,7 @@
 
         <span *ngIf="amountOrdered !== undefined">
           <br>
-          Total retail value ordered: {{floor(amountOrdered * item.price.regular)}}
+          Total retail value ordered: {{floor(amountOrdered * item.price.regular)|currency:'USD'}}
         </span>
         <br>
         <span *ngIf="searchedProductInv.length > 0; else noItemsCanBeTransferred">
