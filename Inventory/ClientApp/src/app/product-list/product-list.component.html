@@ -1,3 +1,4 @@
+<h5>Login</h5>
 <div>
   <p *ngIf="this.userService.badLogin" style="color: red;">
     Your login information is incorrect. Please try again.
@@ -19,7 +20,7 @@
   </ng-template> 
   <br>
 </div>
-
+<h5>Product Search</h5>
 <div>
   <form (ngSubmit)="searchProducts(term, locationId, productId, brand)">
     <input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" [ngModelOptions]="{standalone: true}" required>
