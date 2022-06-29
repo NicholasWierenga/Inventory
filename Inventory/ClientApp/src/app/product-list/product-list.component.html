@@ -31,7 +31,7 @@
     <br>
     <input type="text" name="search" placeholder="Brand" [(ngModel)]="brand" [ngModelOptions]="{standalone: true}">
     <br>
-    <input type="submit" value="Search">
+    <input class=submit type="submit" value="Search">
     <br>
   </form>
   
@@ -51,7 +51,9 @@
   
   <span *ngIf="productService.searchedList.data.length > 0; else emptySearch">
     Number of results: {{productService.searchedList.data.length}}
-
+    <br>
+    Order all low on stock: <button (click)="orderAll()">Order all</button>
+    <br>
   </span>
   
   <ng-template #emptySearch>

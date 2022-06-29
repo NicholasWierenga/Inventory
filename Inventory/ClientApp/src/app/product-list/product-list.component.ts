@@ -6,6 +6,7 @@ import { User } from '../user';
 import { UserService } from '../user.service';
 import { LocationService } from '../location.service';
 
+
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -19,6 +20,7 @@ export class ProductListComponent implements OnInit {
   brand: string = "";
   allUsers: User[] = [];
   badLocationID: boolean = false;
+  
 
   constructor( public productService: ProductService, public userService: UserService,
     private router: Router, private locationService: LocationService  ) { }
@@ -99,6 +101,8 @@ export class ProductListComponent implements OnInit {
           ).length > 0
       );
     }
+    
+    
   }
 
   orderProduct(item: Item) {
@@ -116,4 +120,15 @@ export class ProductListComponent implements OnInit {
     // We have this to make sure searchForFullfillment() doesn't causes us to lose data when go to another page and come back.
     this.productService.searchedList = this.productService.fullList; 
   }
+  orderAll(): void {
+    this.productService.searchedList.data.forEach((data) =>
+      data.items.forEach((item) => {
+        if (item.inventory.onHand <= item.inventory.sales) {
+          item.inventory.onHand += item.inventory.sales + 1;
+          this.productService.updateProductInv(item.inventory.id, item.inventory);
+        }
+      })
+    )
+  }
+ 
 }
