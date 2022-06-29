@@ -120,5 +120,15 @@ export class ProductListComponent implements OnInit {
     // We have this to make sure searchForFullfillment() doesn't causes us to lose data when go to another page and come back.
     this.productService.searchedList = this.productService.fullList; 
   }
+  orderAll(): void {
+    this.productService.searchedList.data.forEach((data) =>
+      data.items.forEach((item) => {
+        if (item.inventory.onHand <= item.inventory.sales) {
+          item.inventory.onHand += item.inventory.sales + 1;
+          this.productService.updateProductInv(item.inventory.id, item.inventory);
+        }
+      })
+    )
+  }
  
 }
