@@ -51,36 +51,7 @@
   
   <span *ngIf="productService.searchedList.data.length > 0; else emptySearch">
     Number of results: {{productService.searchedList.data.length}}
-    
-    <!-- <section *ngFor="let product of productService.searchedList.data" style="border: 1px solid;">
-     <span *ngFor="let item of product.items">
-        {{product.productId}}
-        <br>
-        {{product.brand}}
-        <br>
-        {{product.categories}}
-        <br>
-        Name of product: {{item.inventory.productName}}
-        <br>
-        Curbside pickup: {{item.fulfillment.curbside}}
-        <br>
-        Delivery: {{item.fulfillment.delivery}}
-        <br>
-        In store pickup: {{item.fulfillment.inStore}}
-        <br>
-        Ship to home: {{item.fulfillment.shipToHome}}
-        <br>
-        Sales in past week: {{item.inventory.sales}}
-        <br>
-        Amount in stock: {{item.inventory.onHand}}
-        <br>
-        <p *ngIf="item.inventory.onHand < item.inventory.sales" style="color: red;">
-          This item is nearly out of stock.
-        </p>
-        <button (click)="orderProduct(item)">Order</button>
-      </span>
-    </section>
-    <br> -->
+
   </span>
   
   <ng-template #emptySearch>
@@ -93,7 +64,7 @@
  <mat-accordion [multi]="true">
 
   <mat-expansion-panel style = "border: 1px solid;">
-    <mat-expansion-panel-header class="right-aligned-header"[ngStyle]="{'background-color':(item.inventory.onHand < item.inventory.sales)?'red':'whitesmoke'}">
+    <mat-expansion-panel-header class="right-aligned-header"[ngStyle]="{'background-color':(item.inventory.onHand <= item.inventory.sales)?'red':'whitesmoke'}">
       <mat-panel-title>{{item.inventory.productName}}</mat-panel-title>
       <mat-panel-description>View Item Info</mat-panel-description>
     </mat-expansion-panel-header>
@@ -109,7 +80,7 @@
       <p>Category: {{prodData.categories}}</p>
       <p>Weekly Sales: {{item.inventory.sales}}</p>
       <p>Quantity in Stock: {{item.inventory.onHand}}</p>
-      <p *ngIf="item.inventory.onHand < item.inventory.sales" style="color: red;">
+      <p *ngIf="item.inventory.onHand <= item.inventory.sales" style="color: red;">
         This item is nearly out of stock.
       </p>
       <button (click)="orderProduct(item)" class="button1">Order</button>

@@ -13,7 +13,7 @@ import { LocationService } from '../location.service';
 })
 
 export class ProductListComponent implements OnInit {
-  term: string = "yogurt"; // Must have 3 or more characters in order to work.
+  term: string = ""; // Must have 3 or more characters in order to work.
   locationId: string = "01400441"; // 8 digits, needed for fulfillment and pricing search
   productId: string = "";
   brand: string = "";
