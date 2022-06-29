@@ -2,5 +2,7 @@ export interface Order {
     orderId: number,
     userId: number,
     quantity: number,
-    orderDate: Date
+    orderDate: Date,
+    locationId: string,
+    supplier: string
 }

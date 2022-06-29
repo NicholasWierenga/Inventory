@@ -9,7 +9,7 @@
     <input type="text" [(ngModel)]="this.userService.email" maxlength="255" placeholder="Email">
     <button (click)="this.userService.login(this.userService.email)">Login</button>
     <br>
-    <button (click)="this.userService.testLogin()">Login for testing</button>
+
   </p>
   
   <ng-template #loggedIn>
@@ -52,9 +52,13 @@
   <span *ngIf="productService.searchedList.data.length > 0; else emptySearch">
     Number of results: {{productService.searchedList.data.length}}
     <br>
-    Order all low on stock: <button (click)="orderAll()">Order all</button>
-    <br>
+    <span *ngIf="this.userService.loggedInUser !== undefined">
+      Order all low on stock: <button (click)="orderAll()">Order all</button>
+      <br>
+    </span>
   </span>
+    <br>
+
   
   <ng-template #emptySearch>
       Your search is empty.
@@ -85,8 +89,9 @@
       <p *ngIf="item.inventory.onHand <= item.inventory.sales" style="color: red;">
         This item is nearly out of stock.
       </p>
+      <span  *ngIf="this.userService.loggedInUser !== undefined">
       <button (click)="orderProduct(item)" class="button1">Order</button>
-
+    </span>
     </div>
 
 

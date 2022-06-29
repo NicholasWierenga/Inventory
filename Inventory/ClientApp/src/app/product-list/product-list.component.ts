@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Item, ProductInv } from '../product';
+import { Item } from '../product';
 import { Router } from '@angular/router';
 import { ProductService } from '../product.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { LocationService } from '../location.service';
+import { OrdersService } from '../orders.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { LocationService } from '../location.service';
 })
 
 export class ProductListComponent implements OnInit {
-  term: string = ""; // Must have 3 or more characters in order to work.
+  term: string = "yoghurt"; // Must have 3 or more characters in order to work.
   locationId: string = "01400441"; // 8 digits, needed for fulfillment and pricing search
   productId: string = "";
   brand: string = "";
@@ -23,7 +24,7 @@ export class ProductListComponent implements OnInit {
   
 
   constructor( public productService: ProductService, public userService: UserService,
-    private router: Router, private locationService: LocationService  ) { }
+    private router: Router, private locationService: LocationService, private ordersService: OrdersService  ) { }
 
   // We may want to add a form to the HTML so we aren't constantly calling the api everytime we update any of the parameters.
   searchProducts(term: string, locationId: string, productId: string, brand: string): void {
@@ -120,15 +121,23 @@ export class ProductListComponent implements OnInit {
     // We have this to make sure searchForFullfillment() doesn't causes us to lose data when go to another page and come back.
     this.productService.searchedList = this.productService.fullList; 
   }
+  
   orderAll(): void {
     this.productService.searchedList.data.forEach((data) =>
       data.items.forEach((item) => {
         if (item.inventory.onHand <= item.inventory.sales) {
-          item.inventory.onHand += item.inventory.sales + 1;
-          this.productService.updateProductInv(item.inventory.id, item.inventory);
+          item.inventory.onHand += item.inventory.sales + 1; // To update array we see on the front end
+
+          this.productService.updateProductInv(item.inventory.id, item.inventory).subscribe(() => { // updates productInv in db
+            let newOrder = {orderId: undefined!, userId: this.userService.loggedInUser.id,
+              quantity: item.inventory.sales + 1, orderDate: new Date(), locationId: this.locationService.location.data.locationId,
+              supplier: item.soldBy};
+  
+            this.ordersService.createOrder(newOrder).subscribe(); // creates a record that the user ordered things
+          });
+          
         }
       })
     )
   }
- 
-}
+        }

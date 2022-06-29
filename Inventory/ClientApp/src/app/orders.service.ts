@@ -18,7 +18,7 @@ export class OrdersService {
   }
 
   getOrdersByUserId(id: number): Observable<Order[]> {
-    return this.http.get<Order[]>(this.urlRoot + "order/getOrdersById/"+id, this.requestOptions);
+    return this.http.get<Order[]>(this.urlRoot + "order/getOrdersByUserId/"+id, this.requestOptions);
   }
 
   updateOrder(id: number, body: Order): Observable<Order> {
