@@ -21,9 +21,12 @@
   <br>
 </div>
 <h5>Product Search</h5>
+
+<h6>Required:*Product Name *Location ID</h6>
+
 <div>
   <form (ngSubmit)="searchProducts(term, locationId, productId, brand)">
-    <input type="text" name="search" placeholder="Search products by term" [(ngModel)]="term" [ngModelOptions]="{standalone: true}" required>
+    <input type="text" name="search" placeholder="Search products by name" [(ngModel)]="term" [ngModelOptions]="{standalone: true}" required>
     <br>
     <input type="text" name="search" placeholder="Location ID" [(ngModel)]="locationId" [ngModelOptions]="{standalone: true}" required>
     <br>

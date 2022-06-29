@@ -5,6 +5,7 @@ import { ProductService } from '../product.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { LocationService } from '../location.service';
+import { OrdersService } from '../orders.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class ProductListComponent implements OnInit {
   brand: string = "";
   allUsers: User[] = [];
   badLocationID: boolean = false;
+  orderService: any;
   
 
   constructor( public productService: ProductService, public userService: UserService,
@@ -124,8 +126,16 @@ export class ProductListComponent implements OnInit {
     this.productService.searchedList.data.forEach((data) =>
       data.items.forEach((item) => {
         if (item.inventory.onHand <= item.inventory.sales) {
-          item.inventory.onHand += item.inventory.sales + 1;
-          this.productService.updateProductInv(item.inventory.id, item.inventory);
+          item.inventory.onHand += item.inventory.sales + 1; // To update array we see on the front end
+
+          this.productService.updateProductInv(item.inventory.id, item.inventory).subscribe(() => { // updates productInv in db
+            let newOrder = {orderId: undefined!, userId: this.userService.loggedInUser.id,
+              quantity: item.inventory.sales + 1, orderDate: new Date(), locationId: this.locationService.location.data.locationId,
+              supplier: item.soldBy};
+  
+            this.orderService.createOrder(newOrder).subscribe(); // creates a record that the user ordered things
+          });
+          
         }
       })
     )
