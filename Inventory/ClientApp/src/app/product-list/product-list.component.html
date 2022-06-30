@@ -74,7 +74,7 @@
   <span *ngFor="let item of prodData.items">
  <mat-accordion [multi]="true">
 
-  <mat-expansion-panel style = "border: 1px solid;">
+  <mat-expansion-panel style = "border: 1px solid;" >
     <mat-expansion-panel-header class="right-aligned-header"[ngStyle]="{'background-color':(item.inventory.onHand <= item.inventory.sales)?'red':'whitesmoke'}">
       <mat-panel-title>{{item.inventory.productName}}</mat-panel-title>
       <mat-panel-description>View Item Info</mat-panel-description>

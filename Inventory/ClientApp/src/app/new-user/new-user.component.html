@@ -26,10 +26,11 @@
     <br>
     <input type="submit" value="Submit">
 </form>
+<div class="broger">
+    <img src="..\assets\img\Broger.png" style=" height: 500px; width: 600px;">
+    </div>
 
 <p *ngFor="let user of this.userService.allUsers">
     {{user.id}}: {{user.firstName}} {{user.lastName}}
 </p>
-<div class="broger">
-<img src="..\assets\img\Broger.png" style=" height: 500px; width: 600px;">
-</div>
+
