@@ -1,5 +1,6 @@
-<div class="broger">
+
 <h5>New User Info</h5>
+
 <form (ngSubmit)="createNewUser()">
     <span *ngIf="badFirstName" style="color: red;">
         You need to enter a first name.
@@ -25,10 +26,10 @@
     <br>
     <input type="submit" value="Submit">
 </form>
-<br>
 
 <p *ngFor="let user of this.userService.allUsers">
     {{user.id}}: {{user.firstName}} {{user.lastName}}
 </p>
-<img src="..\assets\img\Broger.png">
+<div class="broger">
+<img src="..\assets\img\Broger.png" style=" height: 500px; width: 600px;">
 </div>
