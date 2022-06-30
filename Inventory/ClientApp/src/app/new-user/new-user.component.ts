@@ -14,7 +14,7 @@ export class NewUserComponent implements OnInit {
   lastName: string = "";
   address: string = "";
   email: string = "";
-  phone!: number;
+  phone: string ="";
   badEmail: boolean = false;
   badFirstName: boolean = false;
   badPhoneNumber: boolean = false;
@@ -39,7 +39,7 @@ export class NewUserComponent implements OnInit {
       this.badEmail = true; // We use user email as a unique identifier for users.
     }
 
-    if (newUser.phone.toString().length !== 10) {
+    if (newUser.phone.length !== 10) {
       this.badPhoneNumber = true;
     }
 

@@ -13,7 +13,7 @@
     <input type="text" placeholder="Address" [(ngModel)]="address" [ngModelOptions]="{standalone: true}">
     <br>
     <span *ngIf="badEmail" style="color: red;">
-        This email has been taken.
+        This email has already created an account.
         <br>
     </span>
     <input type="email" placeholder="Email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
@@ -22,7 +22,7 @@
         Phone number must be 10 digits.
         <br>
     </span>
-    <input type="number" placeholder="Phone number" [(ngModel)]="phone" [ngModelOptions]="{standalone: true}">
+    <input type="text" placeholder="Phone number" [(ngModel)]="phone" [ngModelOptions]="{standalone: true}">
     <br>
     <input type="submit" value="Submit">
 </form>
